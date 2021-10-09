@@ -1,5 +1,15 @@
 import math
 from termcolor import cprint
+from random import randint
+import matplotlib.pyplot as plt
+import time
+
+MILLER_RABIN_PARAMETER_S_PATH = "miller-rabin-parameter-s-test.jpg"
+
+
+def get_random_number(bit_number: int) -> int:
+    return randint(2 ** (bit_number - 1), 2 ** bit_number - 1)
+
 
 # Super-Duper with default parameters
 def LCG(m=2 ** 32, a=69069, b=0, R_0=0):
@@ -30,10 +40,11 @@ def naive_method(potential_prime_number):
         potential_prime_number += 2
 
 
+# TODO: s>1 doesnt work correctly
 # Miller Rabin method
 # Returns False if this number for sure is not primer number
 # Return True if this number probably is prime number. But this probably is still not 100%
-def miller_rabin_method(p, s=3):
+def miller_rabin_method(p, s=1):
     if p <= 3 and p != 1 and p > 0:
         return True
     if p % 2 == 0:
@@ -84,7 +95,61 @@ def random(a, b):
     return (a + LCG()) % (b - a + 1)
 
 
+def calculate_miller_rabin_speed_based_on_parameter_s():
+    time_array = []
+    random_number_in_bit_range = get_random_number(32)
+    for s in range(1, 21):
+        old_time = time.perf_counter()
+        # for potential_prime_number in range(2**31, 2**32):
+        #    print(potential_prime_number)
+        #    if miller_rabin_method(potential_prime_number,s) == True:
+        #        break
+        miller_rabin_method(random_number_in_bit_range, s)
+        new_time = time.perf_counter()
+        time_array.append(new_time - old_time)
+    plt.plot([i for i in range(1, 21)], time_array)
+    plt.ylabel("Time")
+    plt.xlabel("Parameter s")
+    plt.title("Prime number checker base on parameter s")
+    plt.savefig(MILLER_RABIN_PARAMETER_S_PATH)
+
+
+# TODO - this is too slow
+def miller_vs_naive_speed():
+    miller_time_array = []
+    naive_time_array = []
+    for n in range(4, 33):
+        old_time = time.perf_counter()
+        naive_method(2 ** (n - 1))
+        new_time = time.perf_counter()
+        naive_time_array.append(new_time - old_time)
+    for n in range(4, 33):
+        old_time = time.perf_counter()
+        get_prime_number_miller_rabin(2 ** (n - 1))
+        new_time = time.perf_counter()
+        miller_time_array.append(new_time - old_time)
+    plt.plot([i for i in range(4, 33)], naive_time_array, label="naive method")
+    plt.plot([i for i in range(4, 33)], miller_time_array, label="miller_rabin method")
+    plt.ylabel("Time")
+    plt.legend()
+    plt.xlabel("n-bit prime number")
+    plt.title("Native vs miller speed test")
+    plt.savefig(MILLER_RABIN_PARAMETER_S_PATH)
+
+
+def get_prime_number_miller_rabin(potential_prime_number):
+    prime_number = potential_prime_number
+    if prime_number % 2 == 0:
+        prime_number += 1
+    while True:
+        if miller_rabin_method(prime_number) == True:
+            return prime_number
+        prime_number += 2
+
+
 if __name__ == "__main__":
+    calculate_miller_rabin_speed_based_on_parameter_s()
+    miller_vs_naive_speed()
     while True:
         print(
             """

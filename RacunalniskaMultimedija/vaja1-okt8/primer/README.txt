@@ -1,0 +1,3 @@
+dn1 test.bmp fr 000000000000000011111111 111111110000000000000000
+
+Prièakovan izhod je v test_out.bmp

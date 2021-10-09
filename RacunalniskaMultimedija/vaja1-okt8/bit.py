@@ -9,12 +9,19 @@ class Bit:
     # Read bits from byte value
     def read_bits(self, byte_value):
         byte = byte_value[0]
-        bit_array = [(byte >> i) & 1 for i in range(8)]
-        self.bits.append(bit_array)
+        for i in range(8):
+            self.bits.append((byte >> i) & 1)
 
     # Write bits from bit array
     def write_bits(self, filepath, new_bits_to_write):
         bin_array = array("B")
+        missing_bit_length = len(new_bits_to_write) % 8
+
+        # Fill bit_array if needed
+        if missing_bit_length > 0:
+            for _ in range(8 - missing_bit_length):
+                new_bits_to_write.append(0)
+
         bits = self.get_bits_string(new_bits_to_write).ljust(
             32, "0"
         )  # pad it to length 32
@@ -28,20 +35,17 @@ class Bit:
     def find_bit_positions(self, bit_to_find):
         # <input-podatek1> as an array e.g. we create [0, 0, 0, 0, 0, 0, 0, 0] from "00000000"
         bits_to_find_array = [int(bool_value) for bool_value in bit_to_find]
-        # How many arrays we need to check one after another
-        check_range = int(len(bits_to_find_array) / 8)
+        # How many bits we need to check one after another
+        check_range = len(bits_to_find_array)
         my_bits = self.bits
 
-        # We need to check check_range less than whole length because we check check_range of arrays in advance
         index = 0
         while index < len(my_bits):
             is_equal = True
             if index + check_range > len(my_bits):
                 break
             for i in range(check_range):
-                if my_bits[index + i] != [
-                    bits_to_find_array[i * 8 + j] for j in range(8)
-                ]:
+                if my_bits[index + i] != bits_to_find_array[i]:
                     is_equal = False
             if is_equal == True:
                 print(f"Found index: {index}")
@@ -53,13 +57,13 @@ class Bit:
 
         # <input-podatek1> as an array e.g. we create [0, 0, 0, 0, 0, 0, 0, 0] from "00000000"
         old_bits_to_find_array = [int(bool_value) for bool_value in old_bit_value]
-        # How many arrays we need to check one after another
-        old_checked_range = int(len(old_bits_to_find_array) / 8)
+        # How many bits we need to check one after another
+        old_checked_range = len(old_bits_to_find_array)
 
         # <input-podatek2> as an array e.g. we create [0, 0, 0, 0, 0, 0, 0, 0] from "00000000"
         new_bits_to_find_array = [int(bool_value) for bool_value in new_bit_value]
-        # How many arrays we need to check one after another
-        new_checked_range = int(len(new_bits_to_find_array) / 8)
+        # How many bits we need to check one after another
+        new_checked_range = len(new_bits_to_find_array)
 
         index = 0
         while index < len(my_bits):
@@ -69,13 +73,11 @@ class Bit:
             else:
                 is_equal = True
                 for i in range(old_checked_range):
-                    if my_bits[index + i] != [
-                        old_bits_to_find_array[i * 8 + j] for j in range(8)
-                    ]:
+                    if my_bits[index + i] != old_bits_to_find_array[i]:
                         is_equal = False
                 if is_equal == True:
                     for k in range(new_checked_range):
-                        new_bits.append(new_bits_to_find_array[k * 8 : (k + 1) * 8])
+                        new_bits.append(new_bits_to_find_array[k])
                     # We need to add old_checked_range to index because we replaced all the values
                     index += old_checked_range
                 else:
@@ -84,7 +86,7 @@ class Bit:
         return new_bits
 
     def get_bits_string(self, bit_array):
-        return "".join(["".join(["".join(str(y)) for y in x]) for x in bit_array])
+        return "".join(["".join(str(y)) for y in bit_array])
 
     def get_bits(self):
         return self.bits

@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import time
 
 MILLER_RABIN_PARAMETER_S_PATH = "miller-rabin-parameter-s-test.jpg"
+NATIVE_VS_MILLER_RABIN_SPEED_TEST = "miller-rabin-vs-native-speed-test.jpg"
 
 
 def get_random_number(bit_number: int) -> int:
@@ -134,7 +135,7 @@ def miller_vs_naive_speed():
     plt.legend()
     plt.xlabel("n-bit prime number")
     plt.title("Native vs miller speed test")
-    plt.savefig(MILLER_RABIN_PARAMETER_S_PATH)
+    plt.savefig(NATIVE_VS_MILLER_RABIN_SPEED_TEST)
 
 
 def get_prime_number_miller_rabin(potential_prime_number):

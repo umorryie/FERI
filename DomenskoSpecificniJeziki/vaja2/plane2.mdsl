@@ -1,5 +1,5 @@
 plane "MyPlane2"
 	planeType commercialPlane
 	bodyColor white
-	wingColor blue
+	wingColor white
     cabinColor blue

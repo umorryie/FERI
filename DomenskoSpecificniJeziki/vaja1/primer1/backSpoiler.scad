@@ -1,4 +1,3 @@
-
 module backSpoiler(backSpoilerHeight=5,
     backSpoilerRadius=0.45,
     centerBoolean=true,

@@ -10,7 +10,6 @@ optional_parameter_s_input = IntVar()
 
 def check_prime_number_with_miller():
     prime_number = prime_number_input.get()
-    parameter_s = None
     parameter_s = optional_parameter_s_input.get()
     result = Label(text="This might be a prime number", bg="green", width="30")
     is_prime_number = miller_rabin.miller_rabin_method(prime_number, parameter_s)

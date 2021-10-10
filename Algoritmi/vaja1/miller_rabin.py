@@ -47,7 +47,7 @@ def modular_exponentiation(a, b, n):
     d = 1
     binary_b = format(b, "b")
 
-    for i in reversed(range(len(binary_b))):
+    for i in range(len(binary_b)):
         d = (d * d) % n
         if binary_b[i] == 1:
             d = (d * a) % n

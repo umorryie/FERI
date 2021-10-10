@@ -58,7 +58,7 @@ def miller_rabin_method(p, s=1):
         x = modular_exponentiation(a, d, p)
 
         if x == 1:
-            return True
+            continue
 
         for i in range(k - 1):
             if x == p - 1:
@@ -66,8 +66,8 @@ def miller_rabin_method(p, s=1):
             x = (x * x) % p
 
         if x != p - 1:
-            return True
-    return False
+            return False
+    return True
 
 
 def find_k_and_d(p):
@@ -85,9 +85,9 @@ def modular_exponentiation(a, b, n):
     d = 1
     binary_b = format(b, "b")
 
-    for i in reversed(range(len(binary_b) - 1)):
+    for i in reversed(range(len(binary_b))):
         d = (d * d) % n
-        if binary_b[len(binary_b) - 1 - i] == 1:
+        if binary_b[i] == 1:
             d = (d * a) % n
     return d
 

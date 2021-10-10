@@ -1,0 +1,5 @@
+plane "MyPlane1"
+	planeType oldPlane
+	bodyColor grey
+	wingColor black
+    cabinColor black

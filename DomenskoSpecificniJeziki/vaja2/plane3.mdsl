@@ -1,0 +1,5 @@
+plane "MyPlane3"
+	planeType helicopter
+	bodyColor brown
+	wingColor brown
+    cabinColor brown

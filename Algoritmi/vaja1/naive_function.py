@@ -2,6 +2,9 @@ import math
 
 # Naive/Foolish method
 def naive_method(potential_prime_number):
+    if potential_prime_number == 2:
+        return 2
+
     # potential_prime_number can not be even number
     if potential_prime_number % 2 == 0:
         potential_prime_number += 1

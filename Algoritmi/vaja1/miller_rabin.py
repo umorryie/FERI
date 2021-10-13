@@ -1,5 +1,17 @@
+class LCG_CLASS:
+    def __init__(self) -> None:
+        self.current = 1
+
+    def get_LCG(self):
+        self.current = LCG(R_0=self.current)
+        return self.current
+
+    def random(self, a, b):
+        return (a + self.get_LCG()) % (b - a + 1)
+
+
 # Super-Duper with default parameters
-def LCG(m=2 ** 32, a=69069, b=0, R_0=0):
+def LCG(m=2 ** 32, a=69069, b=0, R_0=1):
     return (a * R_0 + b) % m
 
 
@@ -8,15 +20,19 @@ def LCG(m=2 ** 32, a=69069, b=0, R_0=0):
 # Returns False if this number for sure is not primer number
 # Return True if this number probably is prime number. But this probably is still not 100%
 def miller_rabin_method(p, s=1):
-    if p <= 3 and p != 1 and p > 0:
+    lcg_instance = LCG_CLASS()
+
+    if p <= 1:
+        return False
+    if p <= 3:
         return True
     if p % 2 == 0:
         return False
 
     d, k = find_k_and_d(p)
 
-    for j in range(1, s):
-        a = random(2, p - 2)
+    for j in range(1, s+1):
+        a = lcg_instance.random(2, p - 2)
         x = modular_exponentiation(a, d, p)
 
         if x == 1:
@@ -49,10 +65,6 @@ def modular_exponentiation(a, b, n):
 
     for i in range(len(binary_b)):
         d = (d * d) % n
-        if binary_b[i] == 1:
+        if binary_b[i] == "1":
             d = (d * a) % n
     return d
-
-
-def random(a, b):
-    return (a + LCG()) % (b - a + 1)

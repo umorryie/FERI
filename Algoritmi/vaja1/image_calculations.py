@@ -17,10 +17,6 @@ def calculate_miller_rabin_speed_based_on_parameter_s():
     random_number_in_bit_range = get_random_number(32)
     for s in range(1, 21):
         old_time = time.perf_counter()
-        # for potential_prime_number in range(2**31, 2**32):
-        #    print(potential_prime_number)
-        #    if miller_rabin_method(potential_prime_number,s) == True:
-        #        break
         miller_rabin.miller_rabin_method(random_number_in_bit_range, s)
         new_time = time.perf_counter()
         time_array.append(new_time - old_time)

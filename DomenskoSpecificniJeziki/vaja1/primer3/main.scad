@@ -2,6 +2,7 @@ include <body.scad>
 include <backSpoiler.scad>
 include <wing.scad>
 include <wingCircle.scad>
+include <legs.scad>
 
 $fn=100;
 
@@ -26,3 +27,17 @@ rotate([90,0,0])
     
 // Back spoiler
 backSpoiler();
+
+// Legs
+rotate([0,90,0])
+    translate([0,-27,3])
+    legs(cubeX=5);
+rotate([0,90,0])
+    translate([0,-27,-3])
+    legs(cubeX=5);
+rotate([0,90,0])
+    translate([0,-7,1])
+    legs(cubeX=4);
+rotate([0,90,0])
+    translate([0,-7,-1])
+    legs(cubeX=4);

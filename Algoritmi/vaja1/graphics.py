@@ -35,7 +35,7 @@ def check_prime_number_function_with_naive():
     result.place(x=15, y=220)
 
 
-def generate_prime_number():
+def generate_prime_number_naive():
     digit_length = prime_number_length_input.get()
     if digit_length < 2 or digit_length > 32:
         result = Label(
@@ -50,7 +50,27 @@ def generate_prime_number():
             bg="green",
             width="50",
         )
-    result.place(x=15, y=510)
+    result.place(x=60, y=510)
+
+
+def generate_prime_number_miller():
+    digit_length = prime_number_length_input.get()
+    if digit_length < 2 or digit_length > 32:
+        result = Label(
+            text=f"Please insert a valid prime number in bit length from 2 fo 32",
+            bg="red",
+            width="50",
+        )
+    else:
+        prime_number = miller_rabin.get_prime_number_miller_rabin(
+            2 ** (digit_length - 1)
+        )
+        result = Label(
+            text=f"Your {digit_length} digit bit prime number is: {prime_number}",
+            bg="green",
+            width="50",
+        )
+    result.place(x=60, y=510)
 
 
 def create_graphics():
@@ -110,15 +130,25 @@ def create_graphics():
     prime_number_length_entry = Entry(
         textvariable=prime_number_length_input, width="30"
     )
-    prime_number_length_entry.place(x=15, y=430)
+    prime_number_length_entry.place(x=160, y=430)
     generate_prime_number_button = Button(
         screen,
-        text="Generate prime number",
+        text="Generate prime number with miller",
         width="27",
         height="1",
-        command=generate_prime_number,
+        command=generate_prime_number_miller,
         bg="grey",
     )
     generate_prime_number_button.place(x=15, y=455)
+
+    generate_prime_number_button_naive = Button(
+        screen,
+        text="Generate prime number with naive",
+        width="27",
+        height="1",
+        command=generate_prime_number_naive,
+        bg="grey",
+    )
+    generate_prime_number_button_naive.place(x=300, y=455)
 
     screen.mainloop()

@@ -31,7 +31,7 @@ def miller_rabin_method(p, s=1):
 
     d, k = find_k_and_d(p)
 
-    for j in range(1, s+1):
+    for j in range(1, s + 1):
         a = lcg_instance.random(2, p - 2)
         x = modular_exponentiation(a, d, p)
 
@@ -68,3 +68,17 @@ def modular_exponentiation(a, b, n):
         if binary_b[i] == "1":
             d = (d * a) % n
     return d
+
+
+def get_prime_number_miller_rabin(potential_prime_number):
+    if potential_prime_number == 2:
+        return 2
+
+    prime_number = potential_prime_number
+    if prime_number % 2 == 0:
+        prime_number += 1
+
+    while True:
+        if miller_rabin_method(prime_number) == True:
+            return prime_number
+        prime_number += 2

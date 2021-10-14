@@ -38,7 +38,7 @@ def miller_vs_naive_speed():
         naive_time_array.append(new_time - old_time)
     for n in range(4, 33):
         old_time = time.perf_counter()
-        get_prime_number_miller_rabin(2 ** (n - 1))
+        miller_rabin.get_prime_number_miller_rabin(2 ** (n - 1))
         new_time = time.perf_counter()
         miller_time_array.append(new_time - old_time)
     plt.plot([i for i in range(4, 33)], naive_time_array, label="naive method")
@@ -50,11 +50,3 @@ def miller_vs_naive_speed():
     plt.savefig(NATIVE_VS_MILLER_RABIN_SPEED_TEST)
 
 
-def get_prime_number_miller_rabin(potential_prime_number):
-    prime_number = potential_prime_number
-    if prime_number % 2 == 0:
-        prime_number += 1
-    while True:
-        if miller_rabin.miller_rabin_method(prime_number) == True:
-            return prime_number
-        prime_number += 2

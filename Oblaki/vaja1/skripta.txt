@@ -1,0 +1,34 @@
+Dockerfile:
+FROM ubuntu:latest
+RUN apt update && apt install openssh-server sudo -y
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 admin 
+RUN echo 'admin:admin' | chpasswd
+RUN systemctl enable ssh
+RUN service ssh start
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN echo "/root/.ssh/id_rsa" | ssh-keygen -t rsa -b 4096 -C "matej.pesjak@student.um.si"
+
+
+Skripta run.sh:
+#!/bin/bash
+docker build -t exercise1 .
+docker run -it exercise1
+
+Zagon skripte:
+chmod u+x run.sh
+./run.sh
+
+Delovanje skripte:
+- Ustvarimo ubuntu docker image
+- Inštaliramo openssh
+- Dodamo userja admin z passwordom admin
+- Vklopimo ssh
+- Poženemo ssh
+- Kreiramo ssh ključ
+
+Potek demonstracije povezave z ssh:
+- Kreiramo ključ na lokalnem računalniku z ssh-keygen -t rsa -b 4096 -C "matej.pesjak@student.um.si"
+- V docker linux instanci poženemo: sudo service ssh start
+- Poiščemo ip address docker procesa: docker inspect <CONTAINER_ID/NAME> | grep -i "IPaDDreSS"
+- Kopiramo public ključ v docker container: ssh-copy-id -i id_rsa.pub admin@<docker-ip>
+- Povežemo se na docker container preko ssh brez passworda: ssh admin@172.17.0.3

@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import naive_function
 import miller_rabin
 
-MILLER_RABIN_PARAMETER_S_PATH = "miller-rabin-parameter-s-test.jpg"
-NATIVE_VS_MILLER_RABIN_SPEED_TEST = "miller-rabin-vs-native-speed-test.jpg"
+MILLER_RABIN_PARAMETER_S_PATH = "miller-rabin-parameter-s-test.pdf"
+NATIVE_VS_MILLER_RABIN_SPEED_TEST = "miller-rabin-vs-native-speed-test.pdf"
 
 
 def get_random_number(bit_number: int) -> int:

@@ -1,5 +1,8 @@
 plane "MyPlane3"
-	planeType helicopter
-	bodyColor brown
-	wingColor brown
-    cabinColor brown
+	planeType oldPlane
+	bodyColor red
+	wingColor red
+    cabinColor black
+	wingCircleColor black
+	wingCircleWidth medium
+	legsColor black

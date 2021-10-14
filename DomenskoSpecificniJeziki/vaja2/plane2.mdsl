@@ -1,5 +1,7 @@
 plane "MyPlane2"
 	planeType commercialPlane
+	planeLength large
 	bodyColor white
 	wingColor white
     cabinColor blue
+	powerEngineColor white

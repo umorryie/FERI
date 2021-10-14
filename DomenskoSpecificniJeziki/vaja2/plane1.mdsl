@@ -1,5 +1,7 @@
 plane "MyPlane1"
-	planeType oldPlane
+	planeType armyPlane
 	bodyColor grey
 	wingColor black
     cabinColor black
+	backSpoilerColor black
+	propellerColor black

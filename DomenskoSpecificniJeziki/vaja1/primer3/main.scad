@@ -1,8 +1,6 @@
 include <body.scad>
 include <backSpoiler.scad>
 include <wing.scad>
-include <powerSupplier.scad>
-include <cabin.scad>
 include <wingCircle.scad>
 
 $fn=100;
@@ -27,4 +25,4 @@ rotate([90,0,0])
     wingCircle(translateX=8);
     
 // Back spoiler
-    backSpoiler();
+backSpoiler();

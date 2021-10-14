@@ -3,7 +3,9 @@ module airplaneBody(bodyLength=30,
     airplaneFrontRadius=4,
     centerBoolean=false,
     bodyColor="red",
+    cabinColor="black",
     headLength=4,
+    cubeRadius=10,
     colorOpacity=1) {
         // Airplane's body
         color(bodyColor,colorOpacity)
@@ -25,4 +27,15 @@ module airplaneBody(bodyLength=30,
         translate([bodyLength + headLength,0,0])
             color(bodyColor,colorOpacity)
             sphere(airplaneFrontRadius);
+        
+        // cabin 
+        difference(){
+            rotate([0,-90,0])
+                translate([bodyLength + headLength+0.2,0,0])
+                color(cabinColor,colorOpacity)
+                sphere(airplaneFrontRadius);
+            rotate([0,-90,0])
+                translate([bodyLength + headLength+airplaneFrontRadius/2,-airplaneFrontRadius,0])
+                    cube(cubeRadius, center=true);
+        }
 }

@@ -3,3 +3,5 @@
 /**/converted.bmp
 /Algoritmi/vaja1/*.jpg
 /Algoritmi/vaja1/*.pdf
+*/**/dist/**
+*/**/build/**

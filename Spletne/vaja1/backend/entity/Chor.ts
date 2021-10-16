@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  AfterUpdate,
 } from "typeorm";
 
 import { Tag } from "./Tag";
@@ -22,7 +23,15 @@ export class Chor {
   @Column()
   name: string;
 
+  @Column({ default: new Date() })
+  updated_at: Date;
+
   @ManyToMany(() => Tag, (chor) => chor.name)
   @JoinTable()
   photos: Tag[];
+
+  @AfterUpdate()
+  updateDates() {
+    this.updated_at = new Date();
+  }
 }

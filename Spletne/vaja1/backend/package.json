@@ -9,6 +9,7 @@
     "prestart": "npm run build",
     "start": "node --max-old-space-size=512 --gc_interval=60 .",
     "dev": "nodemon --watch  **/*.ts --exec npm start",
+    "createDatabase": "node dist/db/getOrmConnection.js",
     "tsc": "tsc",
     "lint": "eslint **/*.ts --max-warnings=0"
   },
@@ -21,7 +22,8 @@
     "express": "^4.17.1",
     "handy-redis": "^2.2.2",
     "helmet": "^4.6.0",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "typeorm": "^0.2.38"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.7",

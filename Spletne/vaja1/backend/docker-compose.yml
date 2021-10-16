@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres
+    container_name: spletne-postgres
+    restart: on-failure:10
+    volumes:
+      - spletne-postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: "spletne"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "toolz123"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+volumes:
+  spletne-postgres:
+    driver: local

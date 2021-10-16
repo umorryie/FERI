@@ -1,0 +1,26 @@
+# RAZVOJ IN UPRAVLJANJE PROGRAMSKIH SISTEMOV
+
+- ☒ Naredi načrt
+
+# DOMENSKO SPECIFIČNI MODELIRNI JEZIKI
+
+- ☒ Vaja 1 Popravi
+- ☒ Vaja 2 Naredi
+
+# RAČUNALNIŠKA MULTIMEDIA
+
+- ✅ Vaja1
+
+# IZBRANI ALGORITMI
+
+- ✅ Vaja1
+
+# SPLETNE TEHNOLOGIJE
+
+- ☒ Vaja 1
+- ☒ Vaja 3
+
+# POSTAVITEV IN UPRAVLJANJE RAČUNALNIŠKIH OBLAKOV
+
+- ☒ Vaja 1 Docker
+- ☒ Vaja 2

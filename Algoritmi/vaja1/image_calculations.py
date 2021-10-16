@@ -14,10 +14,11 @@ def get_random_number(bit_number: int) -> int:
 
 def calculate_miller_rabin_speed_based_on_parameter_s():
     time_array = []
-    random_number_in_bit_range = get_random_number(32)
     for s in range(1, 21):
         old_time = time.perf_counter()
-        miller_rabin.miller_rabin_method(random_number_in_bit_range, s)
+        for _ in range(1000):
+            random_number_in_bit_range = get_random_number(32)
+            miller_rabin.miller_rabin_method(random_number_in_bit_range, s)
         new_time = time.perf_counter()
         time_array.append(new_time - old_time)
     plt.plot([i for i in range(1, 21)], time_array)

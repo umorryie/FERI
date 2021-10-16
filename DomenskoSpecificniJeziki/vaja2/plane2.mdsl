@@ -5,3 +5,5 @@ plane "MyPlane2"
 	wingColor white
     cabinColor blue
 	powerEngineColor white
+	// TODO vrata
+	// TODO razlino št kril

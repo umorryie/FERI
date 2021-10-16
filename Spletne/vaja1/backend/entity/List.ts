@@ -5,7 +5,9 @@ import {
   ManyToMany,
   JoinTable,
   AfterUpdate,
+  OneToMany,
 } from "typeorm";
+import { Chor } from "./Chor";
 
 import { Tag } from "./Tag";
 
@@ -23,9 +25,12 @@ export class List {
   @Column({ default: new Date() })
   updated_at: Date;
 
-  @ManyToMany(() => Tag, (chor) => chor.name)
+  @ManyToMany(() => Tag, (tag) => tag.name)
   @JoinTable()
-  photos: Tag[];
+  tags: Tag[];
+
+  @OneToMany(() => Chor, (chor) => chor.list)
+  chors: Chor[];
 
   @AfterUpdate()
   updateDates() {

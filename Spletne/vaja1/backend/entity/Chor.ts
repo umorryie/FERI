@@ -5,8 +5,11 @@ import {
   ManyToMany,
   JoinTable,
   AfterUpdate,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 
+import { List } from "./List";
 import { Tag } from "./Tag";
 
 @Entity()
@@ -23,12 +26,19 @@ export class Chor {
   @Column()
   name: string;
 
+  @Column({ default: false })
+  done: boolean;
+
   @Column({ default: new Date() })
   updated_at: Date;
 
-  @ManyToMany(() => Tag, (chor) => chor.name)
+  @ManyToMany(() => Tag, (tag) => tag.name)
   @JoinTable()
-  photos: Tag[];
+  tags: Tag[];
+
+  @OneToOne(() => List, (list) => list.chors)
+  @JoinColumn()
+  list: List;
 
   @AfterUpdate()
   updateDates() {

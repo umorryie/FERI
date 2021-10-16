@@ -1,7 +1,17 @@
 import { Express } from "express";
 
-import { postInsertList } from "./list";
+import {
+  selectList,
+  postList,
+  removeList,
+  allLists,
+  updateOneList,
+} from "./list";
 
 export const setRoutes = (app: Express): void => {
-  postInsertList(app);
+  postList(app);
+  selectList(app);
+  removeList(app);
+  allLists(app);
+  updateOneList(app);
 };

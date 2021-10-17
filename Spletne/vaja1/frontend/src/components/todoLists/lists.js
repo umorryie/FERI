@@ -10,8 +10,8 @@ import { FormControlLabel, Switch } from "@mui/material";
 export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleChange = (expandedValue) => {
+    setExpanded(expandedValue);
   };
 
   React.useEffect(() => {
@@ -93,13 +93,13 @@ export const Lists = ({ setListItems, listItems }) => {
         );
       });
       return (
-        <Accordion
-          expanded={expanded === index}
-          onChange={handleChange(index)}
-          key={index}
-        >
+        <Accordion expanded={expanded === index} key={index}>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={
+              <ExpandMoreIcon
+                onClick={() => handleChange(expanded === false ? index : false)}
+              />
+            }
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >

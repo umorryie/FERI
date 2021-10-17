@@ -56,7 +56,7 @@ export const Lists = ({ setListItems, listItems }) => {
             id="panel1bh-header"
           >
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
-            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+            <Typography sx={{ width: "100%", flexShrink: 0 }}>
               {listItem.name}
             </Typography>
           </AccordionSummary>

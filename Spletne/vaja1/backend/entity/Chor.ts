@@ -35,7 +35,9 @@ export class Chor {
   @JoinTable()
   tags: Tag[];
 
-  @ManyToOne(() => List, (list) => list.chor)
+  @ManyToOne(() => List, (list) => list.chor, {
+    onDelete: "CASCADE",
+  })
   list: List;
 
   @AfterUpdate()

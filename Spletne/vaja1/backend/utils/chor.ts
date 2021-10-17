@@ -80,7 +80,7 @@ export const updateChor = async (
       updateProperties.done = done;
     }
 
-    await chorRepository.update({ id }, { name });
+    await chorRepository.update({ id }, updateProperties);
 
     return true;
   } catch (error) {

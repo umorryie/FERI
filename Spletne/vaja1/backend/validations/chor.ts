@@ -12,7 +12,7 @@ export const chorIdValidationSchema = Joi.object({
 
 export const updateChorValidationSchema = Joi.object({
   id: Joi.string().uuid().required(),
-  name: Joi.string(),
-  until: Joi.date(),
-  done: Joi.boolean(),
+  name: Joi.string().allow(null),
+  until: Joi.date().allow(null),
+  done: Joi.boolean().allow(null),
 });

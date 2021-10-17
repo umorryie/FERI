@@ -5,10 +5,19 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FormControlLabel, Switch } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Button, FormControlLabel, Switch } from "@mui/material";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
 
 export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
+  const [addingChor, setAddingChor] = React.useState(false);
+  const [newChorName, setNewChorName] = React.useState("");
+  const [newChoDate, setNewChorDate] = React.useState(new Date());
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -18,7 +27,7 @@ export const Lists = ({ setListItems, listItems }) => {
     fetch("http://localhost:8080/lists")
       .then((res) => res.json())
       .then((data) => setListItems(data.lists));
-  }, []);
+  }, [setListItems]);
 
   const deleteList = (id) => {
     fetch("http://localhost:8080/list", {
@@ -31,6 +40,27 @@ export const Lists = ({ setListItems, listItems }) => {
     }).then((res) => {
       if (res.status === 204) {
         setListItems(listItems.filter((listItem) => listItem.id !== id));
+      }
+    });
+  };
+
+  const deleteChor = (chorId, listId) => {
+    fetch("http://localhost:8080/chor", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: chorId }),
+    }).then((res) => {
+      if (res.status === 204) {
+        const updatedListItems = listItems.map((list) => {
+          if (list.id === listId) {
+            list.chor = list.chor.filter((el) => el.id !== chorId);
+          }
+          return list;
+        });
+        setListItems(updatedListItems);
       }
     });
   };
@@ -49,6 +79,27 @@ export const Lists = ({ setListItems, listItems }) => {
       return true;
     }
     return false;
+  };
+
+  const insertChor = async (id, name, until) => {
+    const res = await fetch("http://localhost:8080/chor", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ listId: id, name, until }),
+    });
+
+    if (res.status === 201) {
+      setNewChorName("");
+      setNewChorDate(new Date());
+      setAddingChor(false);
+      const resJson = await res.json();
+      return resJson.chor;
+    }
+
+    return null;
   };
 
   const updateListItems = async (chorId, value) => {
@@ -70,6 +121,62 @@ export const Lists = ({ setListItems, listItems }) => {
     }
   };
 
+  const addChorHtml = (id) => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div>
+          <TextField
+            required
+            id="outlined-required"
+            label="Chor name"
+            onChange={(e) => setNewChorName(e.target.value)}
+          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Todo until"
+              value={newChoDate}
+              onChange={(newValue) => {
+                setNewChorDate(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <Button
+            variant="contained"
+            endIcon={<AddIcon />}
+            onClick={async () => {
+              const insertedChor = await insertChor(
+                id,
+                newChorName,
+                newChoDate
+              );
+
+              if (insertedChor) {
+                const updatedListItems = listItems.map((list) => {
+                  if (list.id === id) {
+                    list.chor = list.chor.concat([insertedChor]);
+                  }
+
+                  return list;
+                });
+                setListItems(updatedListItems);
+              }
+            }}
+          >
+            Save
+          </Button>
+        </div>
+      </Box>
+    );
+  };
+
   const renderLists = () => {
     const lists = listItems.map((listItem, index) => {
       const chors = listItem.chor.map((chor, index) => {
@@ -89,6 +196,10 @@ export const Lists = ({ setListItems, listItems }) => {
               }
               label="Done"
             />
+            <DeleteIcon
+              color="error"
+              onClick={() => deleteChor(chor.id, listItem.id)}
+            />
           </AccordionDetails>
         );
       });
@@ -104,11 +215,22 @@ export const Lists = ({ setListItems, listItems }) => {
             id="panel1bh-header"
           >
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
-            <Typography sx={{ width: "100%", flexShrink: 0 }}>
+            <Typography variant="h6" sx={{ width: "100%", flexShrink: 0 }}>
               {listItem.name}
             </Typography>
           </AccordionSummary>
-          {chors}
+          {addingChor ? null : (
+            <Button
+              variant="contained"
+              endIcon={<AddIcon />}
+              onClick={() => {
+                setAddingChor(true);
+              }}
+            >
+              Add chor
+            </Button>
+          )}
+          {addingChor ? addChorHtml(listItem.id) : chors}
         </Accordion>
       );
     });

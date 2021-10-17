@@ -12,7 +12,7 @@ function App() {
       <Text
         listItems={listItems}
         setListItems={setListItems}
-        label="Todo list name"
+        label="Add todo"
       ></Text>
       <Lists listItems={listItems} setListItems={setListItems}></Lists>
     </div>

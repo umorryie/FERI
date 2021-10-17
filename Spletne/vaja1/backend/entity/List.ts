@@ -30,7 +30,7 @@ export class List {
   tags: Tag[];
 
   @OneToMany(() => Chor, (chor) => chor.list)
-  chors: Chor[];
+  chor: Chor[];
 
   @AfterUpdate()
   updateDates() {

@@ -5,8 +5,7 @@ import {
   ManyToMany,
   JoinTable,
   AfterUpdate,
-  OneToOne,
-  JoinColumn,
+  ManyToOne,
 } from "typeorm";
 
 import { List } from "./List";
@@ -36,8 +35,7 @@ export class Chor {
   @JoinTable()
   tags: Tag[];
 
-  @OneToOne(() => List, (list) => list.chors)
-  @JoinColumn()
+  @ManyToOne(() => List, (list) => list.chor)
   list: List;
 
   @AfterUpdate()

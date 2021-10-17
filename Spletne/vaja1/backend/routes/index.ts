@@ -7,6 +7,7 @@ import {
   allLists,
   updateOneList,
 } from "./list";
+import { postChor, removeChor, allListsChors, updateOneChor } from "./chor";
 
 export const setRoutes = (app: Express): void => {
   postList(app);
@@ -14,4 +15,8 @@ export const setRoutes = (app: Express): void => {
   removeList(app);
   allLists(app);
   updateOneList(app);
+  postChor(app);
+  removeChor(app);
+  allListsChors(app);
+  updateOneChor(app);
 };

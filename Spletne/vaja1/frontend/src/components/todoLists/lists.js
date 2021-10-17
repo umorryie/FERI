@@ -6,9 +6,8 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export const Lists = () => {
+export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
-  const [listItems, setListItems] = React.useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

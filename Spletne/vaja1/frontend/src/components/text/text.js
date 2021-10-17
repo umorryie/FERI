@@ -1,7 +1,7 @@
 import { Alert, TextField } from "@mui/material";
 import * as React from "react";
 
-export const Text = (props) => {
+export const Text = ({ label, setListItems, listItems }) => {
   const [name, setName] = React.useState("");
   const [showAlert, setShowAler] = React.useState(false);
   const [alertStatus, setAlertStatus] = React.useState(null);
@@ -15,6 +15,7 @@ export const Text = (props) => {
       body: JSON.stringify({ name: nameValue }),
     })
       .then((res) => {
+        setName("");
         setAlertStatus(res.status);
         setShowAler(true);
         setTimeout(() => {
@@ -24,7 +25,9 @@ export const Text = (props) => {
       })
       .then((res) => {
         if (res.list) {
-          setName("");
+          setListItems(
+            listItems.concat([{ id: res.list.id, name: nameValue, chor: [] }])
+          );
         }
       });
   };
@@ -43,7 +46,7 @@ export const Text = (props) => {
     <div>
       <TextField
         id="standard-basic"
-        label={props.label}
+        label={label}
         value={name}
         variant="standard"
         onChange={onKeyChange}

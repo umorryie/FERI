@@ -1,9 +1,12 @@
 plane "MyPlane2"
-	planeType commercialPlane
-	planeLength large
-	bodyColor white
-	wingColor white
-    cabinColor blue
-	powerEngineColor white
-	// TODO vrata
-	// TODO razlino št kril
+	planeSize large
+	planeBodyColor white
+	planeWingColor white
+    planeCabinColor blue
+	planeEngines two
+	numberOfWings two
+	windows "A lot"
+	doorNumber four
+	inscription Airbus
+	backSpoilerTilt large
+	legs true

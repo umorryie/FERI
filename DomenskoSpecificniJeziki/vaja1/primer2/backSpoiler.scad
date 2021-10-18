@@ -6,9 +6,10 @@ module backSpoiler(
     wingsColor="white",
     frontVsRearWingLengthRatio=1.5,
     colorOpacity=1,
-    sphereRadius=1) {
+    sphereRadius=1,
+    tilt=30) {
         translate([0,3, 3])
-            rotate([0,-30,90])
+            rotate([0,-tilt,90])
             color(wingsColor, colorOpacity)
             scale([4, wingsDepth, 2])
             sphere(sphereRadius);

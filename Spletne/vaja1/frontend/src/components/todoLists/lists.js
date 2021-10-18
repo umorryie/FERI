@@ -18,6 +18,7 @@ export const Lists = ({ setListItems, listItems }) => {
   const [addingChor, setAddingChor] = React.useState(false);
   const [newChorName, setNewChorName] = React.useState("");
   const [newChoDate, setNewChorDate] = React.useState(new Date());
+  const [newChorNameError, setNewChorNameError] = React.useState(false);
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -134,8 +135,9 @@ export const Lists = ({ setListItems, listItems }) => {
         <div>
           <TextField
             required
+            error={newChorNameError}
             id="outlined-required"
-            label="Chor name"
+            label={newChorNameError ? "Empty not valid" : "Chor name"}
             onChange={(e) => setNewChorName(e.target.value)}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -152,6 +154,10 @@ export const Lists = ({ setListItems, listItems }) => {
             variant="contained"
             endIcon={<AddIcon />}
             onClick={async () => {
+              if (newChorName === "") {
+                setNewChorNameError(true);
+                return;
+              }
               const insertedChor = await insertChor(
                 id,
                 newChorName,
@@ -168,6 +174,7 @@ export const Lists = ({ setListItems, listItems }) => {
                 });
                 setListItems(updatedListItems);
               }
+              setNewChorNameError(false);
             }}
           >
             Save

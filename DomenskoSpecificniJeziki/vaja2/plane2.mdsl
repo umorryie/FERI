@@ -5,8 +5,8 @@ plane "MyPlane2"
     planeCabinColor blue
 	planeEngines two
 	numberOfWings two
-	windows "A lot"
 	doorNumber four
 	inscription Airbus
+	inscriptionColor blue
 	backSpoilerTilt large
 	legs true

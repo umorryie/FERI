@@ -4,6 +4,7 @@ include <wing.scad>
 include <powerSupplier.scad>
 include <cabin.scad>
 include <legs.scad>
+include <inscription.scad>
 
 $fn=100;
 
@@ -15,9 +16,10 @@ planeEngines="three";
 numberOfWings="four";
 windows="A lot";
 doorNumber="four";
-inscription="Airbus";
+inscription="AIRBUS";
 backSpoilerTilt="small";
 legs="true";
+inscriptionColor="blue";
 
 planeLength=
 (planeSize=="large")
@@ -126,6 +128,9 @@ if(legs=="true"){
         legs(cubeX=4);
 }
     
-    
-    
+// Inscription
+rotate([90,0,90])
+description(inscription, 5, 0.7, inscriptionColor);
+ 
+     
     

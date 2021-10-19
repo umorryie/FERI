@@ -5,6 +5,7 @@ include <powerSupplier.scad>
 include <cabin.scad>
 include <legs.scad>
 include <inscription.scad>
+include <door.scad>
 
 $fn=100;
 
@@ -14,7 +15,6 @@ planeWingColor="white";
 planeCabinColor="blue";
 planeEngines="three";
 numberOfWings="four";
-windows="A lot";
 doorNumber="four";
 inscription="AIRBUS";
 backSpoilerTilt="small";
@@ -132,5 +132,11 @@ if(legs=="true"){
 rotate([90,0,90])
 description(inscription, 5, 0.7, inscriptionColor);
  
-     
+// Doors
+if(doorNumber=="one"){
+    door();
+} else {
+    door();
+    door();
+}
     

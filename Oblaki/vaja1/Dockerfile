@@ -1,15 +1,10 @@
 FROM ubuntu:latest
-
-RUN apt update && apt install openssh-server sudo -y
-
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 admin 
-
-RUN echo 'admin:admin' | chpasswd
-
-RUN systemctl enable ssh
-
-RUN service ssh start
-
+RUN apt-get update && apt-get install -y openssh-server
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN useradd -m -s /bin/bash sshuser
+RUN echo "sshuser:password" | chpasswd
+COPY id_rsa.pub /home/sshuser/.ssh/authorized_keys
+RUN chown -R sshuser:sshuser /home/sshuser/.ssh
+RUN chmod 600 /home/sshuser/.ssh/authorized_keys
+ENTRYPOINT service ssh start && bash
 
-RUN echo "/root/.ssh/id_rsa" | ssh-keygen -t rsa -b 4096 -C "matej.pesjak@student.um.si"

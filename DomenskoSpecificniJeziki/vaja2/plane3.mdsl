@@ -1,8 +1,14 @@
 plane "MyPlane3"
-	planeType oldPlane
-	bodyColor red
-	wingColor red
-    cabinColor black
-	wingCircleColor black
-	wingCircleWidth medium
-	legsColor black
+	planeSize medium
+	planeBodyColor yellow
+	planeWingColor yellow
+    planeCabinColor black
+	planeEngines three
+	planeEnginesColor yellow
+	numberOfWings two
+	includeDoors true
+	inscription ADRIA
+	inscriptionOnTop false
+	inscriptionColor black
+	backSpoilerTilt small
+	legs false

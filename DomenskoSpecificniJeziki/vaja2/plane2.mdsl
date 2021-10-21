@@ -3,11 +3,11 @@ plane "MyPlane2"
 	planeBodyColor white
 	planeWingColor white
     planeCabinColor blue
-	planeEngines two
-	numberOfWings two
+	planeEngines three
+	numberOfWings four
 	includeDoors true
-	inscription Airbus
+	inscription AIRBUS
 	inscriptionOnTop false
 	inscriptionColor blue
-	backSpoilerTilt large
+	backSpoilerTilt small
 	legs true

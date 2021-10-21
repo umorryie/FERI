@@ -1,7 +1,13 @@
 plane "MyPlane1"
-	planeType armyPlane
-	bodyColor grey
-	wingColor black
-    cabinColor black
-	backSpoilerColor black
-	propellerColor black
+	planeSize small
+	planeBodyColor gray
+	planeWingColor black
+    planeCabinColor red
+	planeEngines one
+	numberOfWings four
+	includeDoors false
+	inscription BOEING
+	inscriptionOnTop true
+	inscriptionColor red
+	backSpoilerTilt small
+	legs true

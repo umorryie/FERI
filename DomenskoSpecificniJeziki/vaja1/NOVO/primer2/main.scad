@@ -46,9 +46,62 @@ if(numberOfWings=="two"){
     rotate([90, 0, 0])
         wings(
         wingsColor=planeWingColor,    
-        translateZ=planeLength*0.6,
+        translateZ=planeLength*0.5,
         translateX=planeLength*0.23,
         wingsLength=planeLength*0.4);
+    // Power supplier engine
+    if(planeEngines=="one"){
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.55])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.55])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    } else if(planeEngines=="two"){
+        rotate([0, 90, 90])
+            translate([1.8 ,8,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-8,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    }  else if(planeEngines=="three"){
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.65])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.65])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.4,-planeLength*0.4])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.4,-planeLength*0.4])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.55])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.55])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    }  
 } else if(numberOfWings=="four"){
     rotate([90, 0, 0])
         wings(
@@ -63,42 +116,54 @@ if(numberOfWings=="two"){
     if(planeEngines=="one"){
         rotate([0, 90, 90])
             translate([1.8 ,planeLength*0.3,-planeLength*0.6])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-planeLength*0.3,-planeLength*0.6])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
             translate([1.8 ,8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
     }  else if(planeEngines=="three"){
         rotate([0, 90, 90])
             translate([1.8 ,8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,planeLength*0.15,-planeLength*0.15])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-planeLength*0.15,-planeLength*0.15])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
     } 
 }
 

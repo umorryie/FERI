@@ -53,11 +53,11 @@ if(numberOfWings=="two"){
     // Power supplier engine
     if(planeEngines=="one"){
         rotate([0, 90, 90])
-            translate([1.8 ,planeLength*0.3,-planeLength*0.6])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.55])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-planeLength*0.3,-planeLength*0.6])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.55])
             powerEngine(
         powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
@@ -79,27 +79,27 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     }  else if(planeEngines=="three"){
         rotate([0, 90, 90])
-            translate([1.8 ,planeLength*0.2,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.65])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-planeLength*0.2,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.65])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,planeLength*0.4,-planeLength*0.45])
+            translate([1.8 ,planeLength*0.4,-planeLength*0.4])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
+            translate([1.8 ,-planeLength*0.4,-planeLength*0.4])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,planeLength*0.3,-planeLength*0.6])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.55])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-planeLength*0.3,-planeLength*0.6])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.55])
             powerEngine(
         powerEngineColor=planeEnginesColor);
     }  

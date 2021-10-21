@@ -8,6 +8,7 @@ include <inscription.scad>
 include <door.scad>
 
 $fn=100;
+planeEnginesColor="white";
 
 planeSize="large";
 planeBodyColor="white";

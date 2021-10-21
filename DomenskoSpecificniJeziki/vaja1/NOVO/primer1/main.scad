@@ -8,19 +8,20 @@ include <inscription.scad>
 include <door.scad>
 
 $fn=100;
+planeEnginesColor="white";
 
-planeSize="large";
-planeBodyColor="white";
-planeWingColor="white";
-planeCabinColor="blue";
-planeEngines="three";
+planeSize="smal";
+planeBodyColor="gray";
+planeWingColor="black";
+planeCabinColor="red";
+planeEngines="one";
 numberOfWings="four";
-includeDoors=true;
-inscription="AIRBUS";
+includeDoors=false;
+inscription="BOEING";
 backSpoilerTilt="small";
 legs="true";
-inscriptionColor="blue";
-inscriptionOnTop=false;
+inscriptionOnTop=true;
+inscriptionColor="red";
 
 interceptionPosition=
 (inscriptionOnTop==true)
@@ -61,11 +62,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
@@ -124,11 +125,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
@@ -141,11 +142,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     }  else if(planeEngines=="three"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])

@@ -9,7 +9,7 @@ include <door.scad>
 
 $fn=100;
 
-planeSize="large";
+planeSize="medium";
 planeBodyColor="yellow";
 planeWingColor="yellow";
 planeCabinColor="black";
@@ -62,11 +62,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
@@ -125,11 +125,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
@@ -142,11 +142,11 @@ if(numberOfWings=="two"){
         powerEngineColor=planeEnginesColor);
     }  else if(planeEngines=="three"){
         rotate([0, 90, 90])
-            translate([1.8 ,8,-planeLength*0.7])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
-            translate([1.8 ,-8,-planeLength*0.7])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.6])
             powerEngine(
         powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])

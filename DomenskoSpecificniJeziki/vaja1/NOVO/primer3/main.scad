@@ -9,11 +9,11 @@ include <door.scad>
 
 $fn=100;
 
-planeSize="medium";
+planeSize="large";
 planeBodyColor="yellow";
 planeWingColor="yellow";
 planeCabinColor="black";
-planeEngines="one";
+planeEngines="three";
 numberOfWings="two";
 includeDoors=true;
 inscription="ADRIA";
@@ -50,6 +50,59 @@ if(numberOfWings=="two"){
         translateZ=planeLength*0.5,
         translateX=planeLength*0.23,
         wingsLength=planeLength*0.4);
+    // Power supplier engine
+    if(planeEngines=="one"){
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.6])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.6])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    } else if(planeEngines=="two"){
+        rotate([0, 90, 90])
+            translate([1.8 ,8,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-8,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    }  else if(planeEngines=="three"){
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.2,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.2,-planeLength*0.7])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,planeLength*0.3,-planeLength*0.6])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+        rotate([0, 90, 90])
+            translate([1.8 ,-planeLength*0.3,-planeLength*0.6])
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
+    }  
 } else if(numberOfWings=="four"){
     rotate([90, 0, 0])
         wings(
@@ -73,16 +126,20 @@ if(numberOfWings=="two"){
     } else if(planeEngines=="two"){
         rotate([0, 90, 90])
             translate([1.8 ,8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-8,-planeLength*0.7])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
         rotate([0, 90, 90])
             translate([1.8 ,-planeLength*0.4,-planeLength*0.45])
-            powerEngine();
+            powerEngine(
+        powerEngineColor=planeEnginesColor);
     }  else if(planeEngines=="three"){
         rotate([0, 90, 90])
             translate([1.8 ,8,-planeLength*0.7])

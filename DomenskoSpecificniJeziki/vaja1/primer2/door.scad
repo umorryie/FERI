@@ -1,6 +1,6 @@
 
-module door(desc, size, y_pos, inscriptionColor) {
-        translate([0, -29,0])
+module door(desc, size, y_pos, inscriptionColor, translateY=29) {
+        translate([0, -translateY,0])
         rotate([0,90,90])
 		difference() {
                 color("black")

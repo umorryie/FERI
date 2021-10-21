@@ -15,11 +15,16 @@ planeWingColor="white";
 planeCabinColor="blue";
 planeEngines="three";
 numberOfWings="four";
-doorNumber="four";
+includeDoors=true;
 inscription="AIRBUS";
 backSpoilerTilt="small";
 legs="true";
 inscriptionColor="blue";
+inscriptionOnTop=false;
+
+interceptionPosition=
+(inscriptionOnTop==true)
+    ? 0: 90;
 
 planeLength=
 (planeSize=="large")
@@ -128,15 +133,27 @@ if(legs=="true"){
         legs(cubeX=4);
 }
     
-// Inscription
-rotate([90,0,90])
-description(inscription, 5, 0.7, inscriptionColor);
- 
-// Doors
-if(doorNumber=="one"){
-    door();
+
+if (planeSize=="small"){
+    // Inscription
+    rotate([interceptionPosition,0,90])
+        description(inscription,planeLength*0.05, inscriptionColor,
+    translateX=planeLength*0.4);
+} else if(planeSize=="medium"){
+    // Inscription
+    rotate([interceptionPosition,0,90])
+        description(inscription, planeLength*0.06, inscriptionColor,
+    translateX=planeLength*0.4);
 } else {
-    door();
-    door();
+    // Inscription
+    rotate([interceptionPosition,0,90])
+        description(inscription,    planeLength*0.05,         inscriptionColor,
+        translateX=planeLength*0.4);
+}
+
+
+// Doors
+if(includeDoors==true){
+    door(translateY=planeLength*0.85);
 }
     

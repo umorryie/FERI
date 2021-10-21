@@ -41,10 +41,10 @@ module textCylinder(	text=""
 	}
 } 
 
-module description(desc, size, y_pos, inscriptionColor) {
-        translate([-20, 0,0])
+module description(desc, size, inscriptionColor, translateX=20) {
+        translate([-translateX, 0,0])
         rotate([0,90,0])
-			textCylinder(desc,r=(2.01),h=1,size=2.5
+			textCylinder(desc,r=(2.01),h=1,size=size,
 							,rotate=[0,-90,-60]
 							,direction="ltr"
 							,valign="bottom", textColor=inscriptionColor);

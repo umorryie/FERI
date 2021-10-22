@@ -1,13 +1,21 @@
 plane "MyPlane2"
-	planeSize large
-	planeBodyColor white
-	planeWingColor white
-    planeCabinColor blue
-	planeEngines three
-	numberOfWings four
-	includeDoors true
-	inscription AIRBUS
-	inscriptionOnTop false
-	inscriptionColor blue
-	backSpoilerTilt small
-	legs true
+	body
+		size large
+		color white
+    	cabin 
+			color blue
+		doors
+			include true
+	wings
+		number four
+		color white
+		engines
+			number three
+	inscription 	
+		text AIRBUS
+		onTop false
+		color blue
+	backSpoiler
+		tilt small
+	legs
+		show true

@@ -1,0 +1,10 @@
+PlaneModelLang -> 'plane' name 'body' 'size' Size 'color' Color 'cabin' 'color' Color 'doors' 'include' Boolean 'wings' 'number' WingNumber
+'color' Color 'engines' 'number' EngineNumber ('color' Color)? ('inscription' 'text' InscriptionText 'onTop' Boolean 'color' Color)? 'backSpoiler'
+'tilt' Size 'legs' 'show' Boolean
+
+Size -> 'small' | 'medium' | 'large'
+Color -> 'red' | 'blue' | 'black' | 'gray' | 'yellow' | 'white'
+Boolean -> 'true' | 'false'
+WingNumber -> 'two' | 'four'
+EngineNumber -> 'one' | 'two' | 'four'
+InscriptionText -> 'ADRIA' | 'BOEING' | 'AIRBUS' 

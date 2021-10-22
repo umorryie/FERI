@@ -1,0 +1,18 @@
+PlaneModelLang -> 'plane' name 'body' SizeChooser ColorChooser 'cabin' ColorChooser 'doors' 'include' Boolean 'wings' WingNumberChooser
+ColorChooser 'engines' EngineNumberChooser ColorChooser? InscriptionDetails? 'backSpoiler' BackSpoilerTiltChooser 'legs' LegsShowChooser
+
+ColorChooser -> 'color' Color
+SizeChooser -> 'size' Size
+WingNumberChooser -> 'number' WingNumber
+EngineNumberChooser -> 'number' EngineNumber
+InscriptionTextChooser -> 'text' InscriptionText
+InscriptionOnTopChooser -> 'onTop' Boolean
+BackSpoilerTiltChooser -> 'tilt' Size
+LegsShowChooser -> 'show' Boolean
+Size -> 'small' | 'medium' | 'large'
+Color -> 'red' | 'blue' | 'black' | 'gray' | 'yellow' | 'white'
+Boolean -> 'true' | 'false'
+WingNumber -> 'two' | 'four'
+EngineNumber -> 'one' | 'two' | 'four'
+InscriptionText -> 'ADRIA' | 'BOEING' | 'AIRBUS'
+InscriptionDetails -> ('inscription' InscriptionTextChooser InscriptionOnTopChooser ColorChooser)?

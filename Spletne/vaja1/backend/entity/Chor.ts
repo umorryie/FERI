@@ -25,6 +25,9 @@ export class Chor {
   @Column()
   name: string;
 
+  @Column({ default: 24 })
+  alert_before_hours: number;
+
   @Column({ default: false })
   done: boolean;
 

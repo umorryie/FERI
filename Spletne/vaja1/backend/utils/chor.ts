@@ -6,7 +6,8 @@ import { List } from "../entity/List";
 export const insertChor = async (
   name: string,
   listId: string,
-  until: Date
+  until: Date,
+  alertBeforeHours: number
 ): Promise<Chor | null> => {
   const connection = await getConnection();
   const chorRepository = connection.getRepository(Chor);
@@ -19,6 +20,7 @@ export const insertChor = async (
     newChor.name = name;
     newChor.until = until;
     newChor.list = list;
+    newChor.alert_before_hours = alertBeforeHours;
     const insertedChor = await chorRepository.save(newChor);
 
     return insertedChor;
@@ -61,7 +63,8 @@ export const updateChor = async (
   id: string,
   name?: string,
   until?: Date,
-  done?: boolean
+  done?: boolean,
+  alertBeforeHours?: number
 ): Promise<boolean> => {
   const connection = await getConnection();
   const chorRepository = connection.getRepository(Chor);
@@ -78,6 +81,10 @@ export const updateChor = async (
 
     if (done === false || done === true) {
       updateProperties.done = done;
+    }
+
+    if (alertBeforeHours) {
+      updateProperties.alert_before_hours = alertBeforeHours;
     }
 
     await chorRepository.update({ id }, updateProperties);

@@ -17,8 +17,9 @@ export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [addingChor, setAddingChor] = React.useState(false);
   const [newChorName, setNewChorName] = React.useState("");
-  const [newChoDate, setNewChorDate] = React.useState(new Date());
+  const [newChorDate, setNewChorDate] = React.useState(new Date());
   const [newChorNameError, setNewChorNameError] = React.useState(false);
+  const [newAlertBeforeHours, setNewAlertBeforeHours] = React.useState(24);
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -66,14 +67,14 @@ export const Lists = ({ setListItems, listItems }) => {
     });
   };
 
-  const updateChor = async (id, name, until, done) => {
+  const updateChor = async (id, name, until, done, alertBeforeHours) => {
     const res = await fetch("http://localhost:8080/chor", {
       method: "PUT",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, name, until, done }),
+      body: JSON.stringify({ id, name, until, done, alertBeforeHours }),
     });
 
     if (res.status === 200) {
@@ -82,14 +83,14 @@ export const Lists = ({ setListItems, listItems }) => {
     return false;
   };
 
-  const insertChor = async (id, name, until) => {
+  const insertChor = async (id, name, until, alertBeforeHours) => {
     const res = await fetch("http://localhost:8080/chor", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ listId: id, name, until }),
+      body: JSON.stringify({ listId: id, name, until, alertBeforeHours }),
     });
 
     if (res.status === 201) {
@@ -104,7 +105,7 @@ export const Lists = ({ setListItems, listItems }) => {
   };
 
   const updateListItems = async (chorId, value) => {
-    const updated = await updateChor(chorId, null, null, value);
+    const updated = await updateChor(chorId, null, null, value, null);
 
     if (updated) {
       const updatedListItems = listItems.map((list) => {
@@ -143,13 +144,19 @@ export const Lists = ({ setListItems, listItems }) => {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Todo until"
-              value={newChoDate}
+              value={newChorDate}
               onChange={(newValue) => {
                 setNewChorDate(newValue);
               }}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
+          <TextField
+            label="Alert before X hours"
+            value={newAlertBeforeHours}
+            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+            onChange={(e) => setNewAlertBeforeHours(e.target.value)}
+          />
           <Button
             variant="contained"
             endIcon={<AddIcon />}
@@ -161,7 +168,8 @@ export const Lists = ({ setListItems, listItems }) => {
               const insertedChor = await insertChor(
                 id,
                 newChorName,
-                newChoDate
+                newChorDate,
+                newAlertBeforeHours
               );
 
               if (insertedChor) {
@@ -175,6 +183,7 @@ export const Lists = ({ setListItems, listItems }) => {
                 setListItems(updatedListItems);
               }
               setNewChorNameError(false);
+              setNewAlertBeforeHours(24);
             }}
           >
             Save
@@ -203,7 +212,87 @@ export const Lists = ({ setListItems, listItems }) => {
               }
               label="Done"
             />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                inputProps={{
+                  style:
+                    chor.done === true
+                      ? {}
+                      : new Date(chor.until) < new Date()
+                      ? {
+                          backgroundColor: "#e13f3f",
+                        }
+                      : (new Date(chor.until) - new Date()) / 3600000 >
+                        chor.alert_before_hours
+                      ? {}
+                      : {
+                          backgroundColor: "#e13f3f",
+                        },
+                }}
+                label="Todo until"
+                value={new Date(chor.until)}
+                onChange={async (newValue) => {
+                  const response = await updateChor(
+                    chor.id,
+                    null,
+                    newValue,
+                    null,
+                    null
+                  );
+
+                  if (response) {
+                    const updatedListItems = listItems.map((list) => {
+                      const updatedChors = list.chor.map((listChor) => {
+                        if (listChor.id === chor.id) {
+                          listChor.until = newValue;
+                        }
+                        return listChor;
+                      });
+
+                      list.chor = updatedChors;
+                      return list;
+                    });
+                    setListItems(updatedListItems);
+                  }
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+
+            <TextField
+              label="Alert before X hours"
+              value={chor.alert_before_hours}
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              onChange={async (e) => {
+                if (!parseInt(e.target.value)) {
+                  return;
+                }
+
+                const updatedListItems = listItems.map((list) => {
+                  const updatedChors = list.chor.map((listChor) => {
+                    if (listChor.id === chor.id) {
+                      listChor.alert_before_hours = parseInt(e.target.value);
+                    }
+                    return listChor;
+                  });
+
+                  list.chor = updatedChors;
+                  return list;
+                });
+                setListItems(updatedListItems);
+                const response = await updateChor(
+                  chor.id,
+                  null,
+                  null,
+                  null,
+                  e.target.value
+                );
+                if (response) {
+                }
+              }}
+            />
             <DeleteIcon
+              sx={{ margin: "auto" }}
               color="error"
               onClick={() => deleteChor(chor.id, listItem.id)}
             />

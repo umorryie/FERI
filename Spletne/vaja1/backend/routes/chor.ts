@@ -31,7 +31,12 @@ export const postChor = (app: Router): Router => {
         );
       }
 
-      const chor = await insertChor(value.name, value.listId, value.until);
+      const chor = await insertChor(
+        value.name,
+        value.listId,
+        value.until,
+        value.alertBeforeHours
+      );
 
       res.status(chor ? 201 : 500).json({ chor });
     }
@@ -110,7 +115,8 @@ export const updateOneChor = (app: Router): Router => {
         value.id,
         value?.name,
         value?.until,
-        value?.done
+        value?.done,
+        value?.alertBeforeHours
       );
 
       res.status(updatedChor ? 200 : 500).json({ updatedChor });

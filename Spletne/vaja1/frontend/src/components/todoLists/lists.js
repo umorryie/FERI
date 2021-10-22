@@ -215,7 +215,18 @@ export const Lists = ({ setListItems, listItems }) => {
           <AccordionSummary
             expandIcon={
               <ExpandMoreIcon
-                onClick={() => handleChange(expanded === false ? index : false)}
+                // If expanded is false, then set expanded to current index to open list
+                // If expanded is not false then check if index is equal to expanded then close current expanded list
+                // If expanded is not false and index is not equal to expanded then close current expanded list and open new one
+                onClick={() =>
+                  handleChange(
+                    expanded === false
+                      ? index
+                      : expanded === index
+                      ? false
+                      : index
+                  )
+                }
               />
             }
             aria-controls="panel1bh-content"

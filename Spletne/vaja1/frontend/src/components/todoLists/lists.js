@@ -264,14 +264,11 @@ export const Lists = ({ setListItems, listItems }) => {
               value={chor.alert_before_hours}
               inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               onChange={async (e) => {
-                if (!parseInt(e.target.value)) {
-                  return;
-                }
-
                 const updatedListItems = listItems.map((list) => {
                   const updatedChors = list.chor.map((listChor) => {
                     if (listChor.id === chor.id) {
-                      listChor.alert_before_hours = parseInt(e.target.value);
+                      listChor.alert_before_hours =
+                        parseInt(e.target.value) || "";
                     }
                     return listChor;
                   });
@@ -280,12 +277,17 @@ export const Lists = ({ setListItems, listItems }) => {
                   return list;
                 });
                 setListItems(updatedListItems);
+
+                if (!parseInt(e.target.value)) {
+                  return;
+                }
+
                 const response = await updateChor(
                   chor.id,
                   null,
                   null,
                   null,
-                  e.target.value
+                  parseInt(e.target.value)
                 );
                 if (response) {
                 }

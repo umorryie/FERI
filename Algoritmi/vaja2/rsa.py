@@ -49,6 +49,8 @@ def from_bits_to_string(bits_value: list) -> str:
     chars_array = []
     for b in range(int(len(bits_value) / 8)):
         byte = bits_value[b * 8 : (b + 1) * 8]
+        # TODO Do we need this?=??
+        # TODO chars_array.append(chr(int("".join([str(bit) for bit in byte[::-1]]), 2)))
         chars_array.append(chr(int("".join([str(bit) for bit in byte]), 2)))
     return "".join(chars_array)
 

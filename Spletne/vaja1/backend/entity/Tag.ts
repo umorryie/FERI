@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
+import { List } from "./List";
+import { Chor } from "./Chor";
 
 @Entity()
 export class Tag {
@@ -10,4 +12,14 @@ export class Tag {
 
   @Column()
   name: string;
+
+  @ManyToMany(() => List, (list) => list.tags, {
+    onDelete: "CASCADE",
+  })
+  list: List;
+
+  @ManyToMany(() => Chor, (chor) => chor.tags, {
+    onDelete: "CASCADE",
+  })
+  chor: List;
 }

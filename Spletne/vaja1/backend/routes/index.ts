@@ -8,6 +8,8 @@ import {
   updateOneList,
 } from "./list";
 import { postChor, removeChor, allListsChors, updateOneChor } from "./chor";
+import { postChorTag, removeChorTag, updateOneChorTag } from "./chorTag";
+import { postListTag, removeListTag, updateOneListTag } from "./listTag";
 
 export const setRoutes = (app: Express): void => {
   postList(app);
@@ -19,4 +21,10 @@ export const setRoutes = (app: Express): void => {
   removeChor(app);
   allListsChors(app);
   updateOneChor(app);
+  postListTag(app);
+  removeListTag(app);
+  updateOneListTag(app);
+  postChorTag(app);
+  removeChorTag(app);
+  updateOneChorTag(app);
 };

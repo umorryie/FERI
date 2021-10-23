@@ -2,9 +2,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
   JoinTable,
   AfterUpdate,
+  ManyToMany,
   OneToMany,
 } from "typeorm";
 import { Chor } from "./Chor";

@@ -22,7 +22,10 @@ export const getList = async (id: string): Promise<List | null> => {
   const listRepository = connection.getRepository(List);
 
   try {
-    const list = await listRepository.findOne({ id }, { relations: ["chor"] });
+    const list = await listRepository.findOne(
+      { id },
+      { relations: ["chor", "tags"] }
+    );
 
     return list;
   } catch (error) {
@@ -35,7 +38,9 @@ export const getAllLists = async (): Promise<List[] | null> => {
   const listRepository = connection.getRepository(List);
 
   try {
-    const lists = await listRepository.find({ relations: ["chor"] });
+    const lists = await listRepository.find({
+      relations: ["chor", "tags"],
+    });
 
     return lists;
   } catch (error) {

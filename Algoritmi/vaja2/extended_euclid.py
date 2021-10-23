@@ -10,11 +10,11 @@ class ExtendedEuclid:
     def extended_euclid(self, a: int, b: int, d=None, x=None, y=None):
         if b == 0:
             self.d = a
-            self.n_d=a
+            self.n_d = a
             self.x = 1
-            self.n_x=1
+            self.n_x = 1
             self.y = 0
-            self.n_y=0
+            self.n_y = 0
             return a
         else:
             self.extended_euclid(b, a % b, self.n_d, self.n_x, self.n_y)

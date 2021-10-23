@@ -85,7 +85,7 @@ if __name__ == "__main__":
         with open(PUBLIC_KEY, "w") as f:
             f.write(f"{e} {n}\n")
         with open(PRIVATE_KEY, "w") as f:
-            f.write(f"{d} {n}\n")
+            f.write(f"{int(d)} {n}\n")
         print("Public and private key successfully generated")
 
         encode_length = int(math.log(n, 2)) + 1
@@ -104,7 +104,7 @@ if __name__ == "__main__":
             encrypted_file = open(ENCRYPTION_FILE, "a")
             encrypted_file.write(encrypted_value)
             encrypted_file.close()
-
+        print("Message encrypted")
     elif len(sys.argv) == 2 and sys.argv[1] == "decrypt":
         with open(DENCRYPTION_FILE, "w") as fp:
             pass
@@ -129,3 +129,4 @@ if __name__ == "__main__":
             decrypted_file = open(DENCRYPTION_FILE, "a")
             decrypted_file.write(decrypted_value)
             decrypted_file.close()
+        print("Message decrypted")

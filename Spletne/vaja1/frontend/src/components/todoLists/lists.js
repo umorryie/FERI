@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -133,30 +134,20 @@ export const Lists = ({ setListItems, listItems }) => {
         noValidate
         autoComplete="off"
       >
-        <div>
-          <TextField
-            required
-            error={newChorNameError}
-            id="outlined-required"
-            label={newChorNameError ? "Empty not valid" : "Chor name"}
-            onChange={(e) => setNewChorName(e.target.value)}
-          />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Todo until"
-              value={newChorDate}
-              onChange={(newValue) => {
-                setNewChorDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "0px 20px",
+            }}
+          >
+            <CloseIcon
+              sx={{ margin: "auto" }}
+              color="error"
+              onClick={() => setAddingChor(false)}
             />
-          </LocalizationProvider>
-          <TextField
-            label="Alert before X hours"
-            value={newAlertBeforeHours}
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            onChange={(e) => setNewAlertBeforeHours(e.target.value)}
-          />
+          </div>
           <Button
             variant="contained"
             endIcon={<AddIcon />}
@@ -189,6 +180,31 @@ export const Lists = ({ setListItems, listItems }) => {
             Save
           </Button>
         </div>
+        <div>
+          <TextField
+            required
+            error={newChorNameError}
+            id="outlined-required"
+            label={newChorNameError ? "Empty not valid" : "Chor name"}
+            onChange={(e) => setNewChorName(e.target.value)}
+          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Todo until"
+              value={newChorDate}
+              onChange={(newValue) => {
+                setNewChorDate(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <TextField
+            label="Alert before X hours"
+            value={newAlertBeforeHours}
+            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+            onChange={(e) => setNewAlertBeforeHours(e.target.value)}
+          />
+        </div>
       </Box>
     );
   };
@@ -198,7 +214,10 @@ export const Lists = ({ setListItems, listItems }) => {
       const chors = listItem.chor.map((chor, index) => {
         return (
           <AccordionDetails key={index} sx={{ display: "flex" }}>
-            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+            <Typography
+              sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
+              variant="h5"
+            >
               {chor.name}
             </Typography>
             <FormControlLabel
@@ -324,12 +343,13 @@ export const Lists = ({ setListItems, listItems }) => {
             id="panel1bh-header"
           >
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
-            <Typography variant="h6" sx={{ width: "100%", flexShrink: 0 }}>
+            <Typography variant="h4" sx={{ width: "100%", flexShrink: 0 }}>
               {listItem.name}
             </Typography>
           </AccordionSummary>
           {addingChor ? null : (
             <Button
+              style={{ margin: "20px" }}
               variant="contained"
               endIcon={<AddIcon />}
               onClick={() => {

@@ -6,7 +6,7 @@ export const Text = ({ label, setListItems, listItems }) => {
   const [showAlert, setShowAler] = React.useState(false);
   const [alertStatus, setAlertStatus] = React.useState(null);
   const insertList = (nameValue) => {
-    fetch("http://localhost:8080/list?a=A", {
+    fetch("http://localhost:8080/list", {
       method: "POST",
       headers: {
         Accept: "application/json",

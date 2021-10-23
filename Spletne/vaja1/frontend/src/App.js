@@ -9,11 +9,13 @@ function App() {
 
   return (
     <div className="App">
-      <Text
-        listItems={listItems}
-        setListItems={setListItems}
-        label="Add todo"
-      ></Text>
+      <div style={{ margin: "30px" }}>
+        <Text
+          listItems={listItems}
+          setListItems={setListItems}
+          label="Add todo"
+        ></Text>
+      </div>
       <Lists listItems={listItems} setListItems={setListItems}></Lists>
     </div>
   );

@@ -5,3 +5,5 @@
 /Algoritmi/vaja1/*.pdf
 */**/dist/**
 */**/build/**
+*/**/public_key.txt
+*/**/private_key.txt

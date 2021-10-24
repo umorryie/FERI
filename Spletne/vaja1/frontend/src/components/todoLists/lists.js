@@ -52,19 +52,29 @@ export const Lists = ({ setListItems, listItems }) => {
     });
   };
 
-  const deleteTag = (id) => {
-    fetch("http://localhost:8080/list-tag", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    }).then((res) => {
+  const deleteTag = (id, updateType) => {
+    fetch(
+      `http://localhost:8080/${updateType === "list" ? "list" : "chor"}-tag`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      }
+    ).then((res) => {
       if (res.status === 204) {
         setListItems(
           listItems.map((listItem) => {
-            listItem.tags = listItem.tags.filter((el) => el.id != id);
+            if (updateType === "list") {
+              listItem.tags = listItem.tags.filter((el) => el.id != id);
+            } else if (updateType === "chor") {
+              listItem.chor = listItem.chor.map((chor) => {
+                chor.tags = chor.tags.filter((tag) => tag.id !== id);
+                return chor;
+              });
+            }
             return listItem;
           })
         );
@@ -319,6 +329,27 @@ export const Lists = ({ setListItems, listItems }) => {
       const chors = listItem.chor.map((chor, index) => {
         return (
           <AccordionDetails key={index} sx={{ display: "flex" }}>
+            <div>
+              {chor.tags.map((el, index) => {
+                return (
+                  <Stack key={index} direction="row" spacing={1}>
+                    <Chip
+                      label={el.name}
+                      onDelete={() => {}}
+                      deleteIcon={
+                        <div>
+                          <EditIcon />
+                          <DeleteIcon
+                            onClick={() => deleteTag(el.id, "chor")}
+                          />
+                        </div>
+                      }
+                      variant="outlined"
+                    />
+                  </Stack>
+                );
+              })}
+            </div>
             <Typography
               sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
               variant="h5"
@@ -475,7 +506,9 @@ export const Lists = ({ setListItems, listItems }) => {
                       deleteIcon={
                         <div>
                           <EditIcon />
-                          <DeleteIcon onClick={() => deleteTag(el.id)} />
+                          <DeleteIcon
+                            onClick={() => deleteTag(el.id, "list")}
+                          />
                         </div>
                       }
                       variant="outlined"

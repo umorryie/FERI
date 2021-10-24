@@ -1,3 +1,4 @@
+import { Chor } from "../entity/Chor";
 import { getConnection } from "../db/getOrmConnection";
 import { List } from "../entity/List";
 
@@ -36,10 +37,18 @@ export const getList = async (id: string): Promise<List | null> => {
 export const getAllLists = async (): Promise<List[] | null> => {
   const connection = await getConnection();
   const listRepository = connection.getRepository(List);
+  const chorRepository = connection.getRepository(Chor);
 
   try {
-    const lists = await listRepository.find({
+    let lists = await listRepository.find({
       relations: ["chor", "tags"],
+    });
+    const chors = await chorRepository.find({
+      relations: ["tags", "list"],
+    });
+    lists = lists.map((list: List) => {
+      list.chor = chors.filter((chor: Chor) => chor.list.id === list.id);
+      return list;
     });
 
     return lists;

@@ -29,6 +29,9 @@ export const Lists = ({ setListItems, listItems }) => {
   const [addingChorTag, setAddingChorTag] = React.useState(false);
   const [newChorTagNameError, setNewChorTagNameError] = React.useState(false);
   const [newChorTagName, setNewChorTagName] = React.useState("");
+  const [newEditingListName, setNewEditingListName] = React.useState("");
+  const [newListNameError, setNewListNameError] = React.useState(false);
+  const [editingNewListName, setEditingNewListName] = React.useState(false);
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -149,6 +152,27 @@ export const Lists = ({ setListItems, listItems }) => {
     return false;
   };
 
+  const updateList = async (id, name) => {
+    const res = await fetch("http://localhost:8080/list", {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, name }),
+    });
+
+    if (res.status === 200) {
+      const updatedListItems = listItems.map((list) => {
+        if (list.id === id) {
+          list.name = name;
+        }
+        return list;
+      });
+      setListItems(updatedListItems);
+    }
+  };
+
   const insertChor = async (id, name, until, alertBeforeHours) => {
     const res = await fetch("http://localhost:8080/chor", {
       method: "POST",
@@ -210,7 +234,10 @@ export const Lists = ({ setListItems, listItems }) => {
             <CloseIcon
               sx={{ margin: "auto" }}
               color="error"
-              onClick={() => setAddingListTag(false)}
+              onClick={() => {
+                setAddingListTag(false);
+                setNewListTagNameError(false);
+              }}
             />
           </div>
           <Button
@@ -287,11 +314,14 @@ export const Lists = ({ setListItems, listItems }) => {
               justifyContent: "center",
               margin: "0px 20px",
             }}
-          > 
+          >
             <CloseIcon
               sx={{ margin: "auto" }}
               color="error"
-              onClick={() => setAddingChorTag(false)}
+              onClick={() => {
+                setAddingChorTag(false);
+                setNewChorTagNameError(false);
+              }}
             />
           </div>
           <Button
@@ -452,6 +482,7 @@ export const Lists = ({ setListItems, listItems }) => {
               variant="h5"
             >
               {chor.name}
+              <EditIcon />
             </Typography>
             <FormControlLabel
               control={
@@ -577,10 +608,47 @@ export const Lists = ({ setListItems, listItems }) => {
           >
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
             <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
-              {listItem.name}
+              {editingNewListName === listItem.id ? (
+                <TextField
+                  required
+                  error={newListNameError}
+                  id="outlined-required"
+                  label={newListNameError ? "Empty not valid" : "New list name"}
+                  onChange={(e) => setNewEditingListName(e.target.value)}
+                />
+              ) : (
+                listItem.name
+              )}
+              {editingNewListName === listItem.id ? (
+                <div>
+                  <CloseIcon
+                    sx={{ margin: "auto" }}
+                    color="error"
+                    onClick={() => setEditingNewListName(false)}
+                  />
+                  <Button
+                    style={{ margin: "20px" }}
+                    variant="contained"
+                    endIcon={<AddIcon />}
+                    onClick={async () => {
+                      if (newEditingListName === "") {
+                        setNewListNameError(true);
+                        return;
+                      }
+                      await updateList(listItem.id, newEditingListName);
+                      setEditingNewListName(false);
+                      setNewListNameError(false);
+                    }}
+                  >
+                    Save name
+                  </Button>
+                </div>
+              ) : (
+                <EditIcon onClick={() => setEditingNewListName(listItem.id)} />
+              )}
               {addingListTag === listItem.id ? (
                 addListTag(listItem.id)
-              ) : (
+              ) : editingNewListName === listItem.id ? null : (
                 <Button
                   style={{ margin: "20px" }}
                   variant="contained"

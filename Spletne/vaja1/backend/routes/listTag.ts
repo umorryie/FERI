@@ -81,7 +81,7 @@ export const updateOneListTag = (app: Router): Router => {
         );
       }
 
-      const updatedListTag = await updateListTag(value.id, value.id);
+      const updatedListTag = await updateListTag(value.name, value.id);
 
       res.status(updatedListTag ? 200 : 500).json({ updatedListTag });
     }

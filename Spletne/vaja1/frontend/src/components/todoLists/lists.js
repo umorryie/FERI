@@ -36,6 +36,17 @@ export const Lists = ({ setListItems, listItems }) => {
   const [newChorEditingNameError, setNewChorEditingNameError] =
     React.useState(false);
   const [editingNewChorName, setEditingNewChorName] = React.useState(false);
+  const [newEditingChorTagName, setNewEditingChorTagName] = React.useState("");
+  const [newChorTagEditingNameError, setNewChorTagEditingNameError] =
+    React.useState(false);
+  const [editingNewChorTagName, setEditingNewChorTagName] =
+    React.useState(false);
+  const [newEditingListTagName, setNewEditingListTagName] = React.useState("");
+  const [newListTagEditingNameError, setNewListTagEditingNameError] =
+    React.useState(false);
+  const [editingNewListTagName, setEditingNewListTagName] =
+    React.useState(false);
+  const [currentTagId, setCurrentTagId] = React.useState(false);
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -59,6 +70,48 @@ export const Lists = ({ setListItems, listItems }) => {
       if (res.status === 204) {
         setListItems(listItems.filter((listItem) => listItem.id !== id));
       }
+    });
+  };
+
+  const updateTag = (id, name, updateType) => {
+    fetch(
+      `http://localhost:8080/${updateType === "list" ? "list" : "chor"}-tag`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, name }),
+      }
+    ).then((res) => {
+      if (res.status === 200) {
+        setListItems(
+          listItems.map((listItem) => {
+            if (updateType === "list") {
+              listItem.tags = listItem.tags.map((el) => {
+                if (el.id === id) {
+                  el.name = name;
+                }
+                return el;
+              });
+            } else if (updateType === "chor") {
+              listItem.chor = listItem.chor.map((chor) => {
+                chor.tags = chor.tags.map((el) => {
+                  if (el.id === id) {
+                    el.name = name;
+                  }
+                  return el;
+                });
+                return chor;
+              });
+            }
+            return listItem;
+          })
+        );
+        return true;
+      }
+      return false;
     });
   };
 
@@ -449,7 +502,7 @@ export const Lists = ({ setListItems, listItems }) => {
             <div>
               {addingChorTag === chor.id ? (
                 addChorTag(chor.id)
-              ) : (
+              ) : editingNewChorTagName === chor.id ? null : (
                 <Button
                   style={{ margin: "20px" }}
                   variant="contained"
@@ -461,25 +514,74 @@ export const Lists = ({ setListItems, listItems }) => {
                   Add tag
                 </Button>
               )}
-              {chor.tags.map((el, index) => {
-                return (
-                  <Stack key={index} direction="row" spacing={1}>
-                    <Chip
-                      label={el.name}
-                      onDelete={() => {}}
-                      deleteIcon={
-                        <div>
-                          <EditIcon />
-                          <DeleteIcon
-                            onClick={() => deleteTag(el.id, "chor")}
-                          />
-                        </div>
-                      }
-                      variant="outlined"
+              {editingNewChorTagName === chor.id ? (
+                <div>
+                  <TextField
+                    required
+                    error={newChorTagEditingNameError}
+                    id="outlined-required"
+                    label={
+                      newChorTagEditingNameError
+                        ? "Empty not valid"
+                        : "New tag name"
+                    }
+                    onChange={(e) => setNewEditingChorTagName(e.target.value)}
+                  />
+                  <div>
+                    <CloseIcon
+                      sx={{ margin: "auto" }}
+                      color="error"
+                      onClick={() => {
+                        setEditingNewChorTagName(false);
+                        setNewChorTagEditingNameError(false);
+                        setNewEditingChorTagName("");
+                      }}
                     />
-                  </Stack>
-                );
-              })}
+                    <Button
+                      style={{ margin: "20px" }}
+                      variant="contained"
+                      endIcon={<AddIcon />}
+                      onClick={async () => {
+                        if (newEditingChorTagName === "") {
+                          setNewChorTagEditingNameError(true);
+                          return;
+                        }
+                        updateTag(currentTagId, newEditingChorTagName, "chor");
+                        setEditingNewChorTagName(false);
+                        setNewChorTagEditingNameError(false);
+                        setNewEditingChorTagName("");
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                chor.tags.map((el, index) => {
+                  return (
+                    <Stack key={index} direction="row" spacing={1}>
+                      <Chip
+                        label={el.name}
+                        onDelete={() => {}}
+                        deleteIcon={
+                          <div>
+                            <EditIcon
+                              onClick={() => {
+                                setCurrentTagId(el.id);
+                                setEditingNewChorTagName(chor.id);
+                              }}
+                            />
+                            <DeleteIcon
+                              onClick={() => deleteTag(el.id, "chor")}
+                            />
+                          </div>
+                        }
+                        variant="outlined"
+                      />
+                    </Stack>
+                  );
+                })
+              )}
             </div>
             <Typography
               sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
@@ -735,25 +837,74 @@ export const Lists = ({ setListItems, listItems }) => {
               )}
             </Typography>
             <div>
-              {listItem.tags.map((el, index) => {
-                return (
-                  <Stack key={index} direction="row" spacing={1}>
-                    <Chip
-                      label={el.name}
-                      onDelete={() => {}}
-                      deleteIcon={
-                        <div>
-                          <EditIcon />
-                          <DeleteIcon
-                            onClick={() => deleteTag(el.id, "list")}
-                          />
-                        </div>
-                      }
-                      variant="outlined"
+              {editingNewListTagName === listItem.id ? (
+                <div>
+                  <TextField
+                    required
+                    error={newListTagEditingNameError}
+                    id="outlined-required"
+                    label={
+                      newListTagEditingNameError
+                        ? "Empty not valid"
+                        : "New tag name"
+                    }
+                    onChange={(e) => setNewEditingListTagName(e.target.value)}
+                  />
+                  <div>
+                    <CloseIcon
+                      sx={{ margin: "auto" }}
+                      color="error"
+                      onClick={() => {
+                        setEditingNewListTagName(false);
+                        setNewListTagEditingNameError(false);
+                        setNewEditingListTagName("");
+                      }}
                     />
-                  </Stack>
-                );
-              })}
+                    <Button
+                      style={{ margin: "20px" }}
+                      variant="contained"
+                      endIcon={<AddIcon />}
+                      onClick={async () => {
+                        if (newEditingListTagName === "") {
+                          setNewListTagEditingNameError(true);
+                          return;
+                        }
+                        updateTag(currentTagId, newEditingListTagName, "list");
+                        setEditingNewListTagName(false);
+                        setNewListTagEditingNameError(false);
+                        setNewEditingListTagName("");
+                      }}
+                    >
+                      Update name
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                listItem.tags.map((el, index) => {
+                  return (
+                    <Stack key={index} direction="row" spacing={1}>
+                      <Chip
+                        label={el.name}
+                        onDelete={() => {}}
+                        deleteIcon={
+                          <div>
+                            <EditIcon
+                              onClick={() => {
+                                setCurrentTagId(el.id);
+                                setEditingNewListTagName(listItem.id);
+                              }}
+                            />
+                            <DeleteIcon
+                              onClick={() => deleteTag(el.id, "list")}
+                            />
+                          </div>
+                        }
+                        variant="outlined"
+                      />
+                    </Stack>
+                  );
+                })
+              )}
             </div>
           </AccordionSummary>
           {addingChor ? null : (

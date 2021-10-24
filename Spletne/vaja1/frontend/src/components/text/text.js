@@ -26,7 +26,9 @@ export const Text = ({ label, setListItems, listItems }) => {
       .then((res) => {
         if (res.list) {
           setListItems(
-            listItems.concat([{ id: res.list.id, name: nameValue, chor: [] }])
+            listItems.concat([
+              { id: res.list.id, name: nameValue, chor: [], tags: [] },
+            ])
           );
         }
       });

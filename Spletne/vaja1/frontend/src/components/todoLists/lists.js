@@ -13,6 +13,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import CloseIcon from "@mui/icons-material/Close";
+import { Chip, Stack } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 export const Lists = ({ setListItems, listItems }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -21,6 +23,9 @@ export const Lists = ({ setListItems, listItems }) => {
   const [newChorDate, setNewChorDate] = React.useState(new Date());
   const [newChorNameError, setNewChorNameError] = React.useState(false);
   const [newAlertBeforeHours, setNewAlertBeforeHours] = React.useState(24);
+  const [addingTag, setAddingTag] = React.useState(false);
+  const [newTagNameError, setNewTagNameError] = React.useState(false);
+  const [newTagName, setNewTagName] = React.useState("");
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -44,6 +49,53 @@ export const Lists = ({ setListItems, listItems }) => {
       if (res.status === 204) {
         setListItems(listItems.filter((listItem) => listItem.id !== id));
       }
+    });
+  };
+
+  const deleteTag = (id) => {
+    fetch("http://localhost:8080/list-tag", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    }).then((res) => {
+      if (res.status === 204) {
+        setListItems(
+          listItems.map((listItem) => {
+            listItem.tags = listItem.tags.filter((el) => el.id != id);
+            return listItem;
+          })
+        );
+        return true;
+      }
+      return false;
+    });
+  };
+
+  const insertListTag = (listId, name) => {
+    fetch("http://localhost:8080/list-tag", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: listId, name }),
+    }).then(async (res) => {
+      if (res.status === 201) {
+        const jsonRes = await res.json();
+        setListItems(
+          listItems.map((listItem) => {
+            if (listItem.id === listId) {
+              listItem.tags = listItem.tags.concat([jsonRes.listTag]);
+            }
+            return listItem;
+          })
+        );
+        return true;
+      }
+      return false;
     });
   };
 
@@ -122,6 +174,59 @@ export const Lists = ({ setListItems, listItems }) => {
       });
       setListItems(updatedListItems);
     }
+  };
+
+  const addListTag = (id) => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "0px 20px",
+            }}
+          >
+            <CloseIcon
+              sx={{ margin: "auto" }}
+              color="error"
+              onClick={() => setAddingTag(false)}
+            />
+          </div>
+          <Button
+            variant="contained"
+            endIcon={<AddIcon />}
+            onClick={async () => {
+              if (newTagName === "") {
+                setNewTagNameError(true);
+                return;
+              }
+              insertListTag(id, newTagName);
+              setAddingTag(false);
+              setNewTagNameError(false);
+            }}
+          >
+            Save tag
+          </Button>
+        </div>
+        <div>
+          <TextField
+            required
+            error={newTagNameError}
+            id="outlined-required"
+            label={newTagNameError ? "Empty not valid" : "Tag name"}
+            onChange={(e) => setNewTagName(e.target.value)}
+          />
+        </div>
+      </Box>
+    );
   };
 
   const addChorHtml = (id) => {
@@ -343,9 +448,42 @@ export const Lists = ({ setListItems, listItems }) => {
             id="panel1bh-header"
           >
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
-            <Typography variant="h4" sx={{ width: "100%", flexShrink: 0 }}>
+            <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
               {listItem.name}
+              {addingTag === listItem.id ? (
+                addListTag(listItem.id)
+              ) : (
+                <Button
+                  style={{ margin: "20px" }}
+                  variant="contained"
+                  endIcon={<AddIcon />}
+                  onClick={() => {
+                    setAddingTag(listItem.id);
+                  }}
+                >
+                  Add tag
+                </Button>
+              )}
             </Typography>
+            <div>
+              {listItem.tags.map((el, index) => {
+                return (
+                  <Stack key={index} direction="row" spacing={1}>
+                    <Chip
+                      label={el.name}
+                      onDelete={() => {}}
+                      deleteIcon={
+                        <div>
+                          <EditIcon />
+                          <DeleteIcon onClick={() => deleteTag(el.id)} />
+                        </div>
+                      }
+                      variant="outlined"
+                    />
+                  </Stack>
+                );
+              })}
+            </div>
           </AccordionSummary>
           {addingChor ? null : (
             <Button

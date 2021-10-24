@@ -5,7 +5,7 @@ import { Tag } from "../entity/Tag";
 export const insertChorTag = async (
   name: string,
   chorId: string
-): Promise<boolean> => {
+): Promise<Tag | null> => {
   const connection = await getConnection();
   const chorRepository = connection.getRepository(Chor);
   const tagRepository = connection.getRepository(Tag);
@@ -23,9 +23,9 @@ export const insertChorTag = async (
     const insertedNewTag = await tagRepository.save(newTag);
     const updatedChor = await chorRepository.save(chor);
 
-    return !!updatedChor && !!insertedNewTag;
+    return newTag;
   } catch (error) {
-    return false;
+    return null;
   }
 };
 

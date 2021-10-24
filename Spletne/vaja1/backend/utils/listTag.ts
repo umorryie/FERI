@@ -21,7 +21,7 @@ export const insertListTag = async (
 
   try {
     const insertedNewTag = await tagRepository.save(newTag);
-    const updatedList = await listRepository.save(list);
+    await listRepository.save(list);
 
     return insertedNewTag;
   } catch (error) {

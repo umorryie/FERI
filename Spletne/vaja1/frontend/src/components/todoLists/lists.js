@@ -23,9 +23,12 @@ export const Lists = ({ setListItems, listItems }) => {
   const [newChorDate, setNewChorDate] = React.useState(new Date());
   const [newChorNameError, setNewChorNameError] = React.useState(false);
   const [newAlertBeforeHours, setNewAlertBeforeHours] = React.useState(24);
-  const [addingTag, setAddingTag] = React.useState(false);
-  const [newTagNameError, setNewTagNameError] = React.useState(false);
-  const [newTagName, setNewTagName] = React.useState("");
+  const [addingListTag, setAddingListTag] = React.useState(false);
+  const [newListTagNameError, setNewListTagNameError] = React.useState(false);
+  const [newListTagName, setNewListTagName] = React.useState("");
+  const [addingChorTag, setAddingChorTag] = React.useState(false);
+  const [newChorTagNameError, setNewChorTagNameError] = React.useState(false);
+  const [newChorTagName, setNewChorTagName] = React.useState("");
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -68,7 +71,7 @@ export const Lists = ({ setListItems, listItems }) => {
         setListItems(
           listItems.map((listItem) => {
             if (updateType === "list") {
-              listItem.tags = listItem.tags.filter((el) => el.id != id);
+              listItem.tags = listItem.tags.filter((el) => el.id !== id);
             } else if (updateType === "chor") {
               listItem.chor = listItem.chor.map((chor) => {
                 chor.tags = chor.tags.filter((tag) => tag.id !== id);
@@ -207,20 +210,20 @@ export const Lists = ({ setListItems, listItems }) => {
             <CloseIcon
               sx={{ margin: "auto" }}
               color="error"
-              onClick={() => setAddingTag(false)}
+              onClick={() => setAddingListTag(false)}
             />
           </div>
           <Button
             variant="contained"
             endIcon={<AddIcon />}
             onClick={async () => {
-              if (newTagName === "") {
-                setNewTagNameError(true);
+              if (newListTagName === "") {
+                setNewListTagNameError(true);
                 return;
               }
-              insertListTag(id, newTagName);
-              setAddingTag(false);
-              setNewTagNameError(false);
+              insertListTag(id, newListTagName);
+              setAddingListTag(false);
+              setNewListTagNameError(false);
             }}
           >
             Save tag
@@ -229,16 +232,96 @@ export const Lists = ({ setListItems, listItems }) => {
         <div>
           <TextField
             required
-            error={newTagNameError}
+            error={newListTagNameError}
             id="outlined-required"
-            label={newTagNameError ? "Empty not valid" : "Tag name"}
-            onChange={(e) => setNewTagName(e.target.value)}
+            label={newListTagNameError ? "Empty not valid" : "Tag name"}
+            onChange={(e) => setNewListTagName(e.target.value)}
           />
         </div>
       </Box>
     );
   };
 
+  const insertChorTag = (chortId, name) => {
+    fetch("http://localhost:8080/chor-tag", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: chortId, name }),
+    }).then(async (res) => {
+      if (res.status === 201) {
+        const jsonRes = await res.json();
+        setListItems(
+          listItems.map((listItem) => {
+            listItem.chor = listItem.chor.map((chor) => {
+              if (chor.id === chortId) {
+                chor.tags = chor.tags.concat([jsonRes.chorTag]);
+              }
+              return chor;
+            });
+            return listItem;
+          })
+        );
+        return true;
+      }
+      return false;
+    });
+  };
+
+  const addChorTag = (id) => {
+    return (
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "0px 20px",
+            }}
+          > 
+            <CloseIcon
+              sx={{ margin: "auto" }}
+              color="error"
+              onClick={() => setAddingChorTag(false)}
+            />
+          </div>
+          <Button
+            variant="contained"
+            endIcon={<AddIcon />}
+            onClick={async () => {
+              if (newChorTagName === "") {
+                setNewChorTagNameError(true);
+                return;
+              }
+              insertChorTag(id, newChorTagName);
+              setAddingChorTag(false);
+              setNewChorTagNameError(false);
+            }}
+          >
+            Save tag
+          </Button>
+        </div>
+        <div>
+          <TextField
+            required
+            error={newChorTagNameError}
+            id="outlined-required"
+            label={newChorTagNameError ? "Empty not valid" : "Tag name"}
+            onChange={(e) => setNewChorTagName(e.target.value)}
+          />
+        </div>
+      </Box>
+    );
+  };
   const addChorHtml = (id) => {
     return (
       <Box
@@ -330,6 +413,20 @@ export const Lists = ({ setListItems, listItems }) => {
         return (
           <AccordionDetails key={index} sx={{ display: "flex" }}>
             <div>
+              {addingChorTag === chor.id ? (
+                addChorTag(chor.id)
+              ) : (
+                <Button
+                  style={{ margin: "20px" }}
+                  variant="contained"
+                  endIcon={<AddIcon />}
+                  onClick={() => {
+                    setAddingChorTag(chor.id);
+                  }}
+                >
+                  Add tag
+                </Button>
+              )}
               {chor.tags.map((el, index) => {
                 return (
                   <Stack key={index} direction="row" spacing={1}>
@@ -481,7 +578,7 @@ export const Lists = ({ setListItems, listItems }) => {
             <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
             <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
               {listItem.name}
-              {addingTag === listItem.id ? (
+              {addingListTag === listItem.id ? (
                 addListTag(listItem.id)
               ) : (
                 <Button
@@ -489,7 +586,7 @@ export const Lists = ({ setListItems, listItems }) => {
                   variant="contained"
                   endIcon={<AddIcon />}
                   onClick={() => {
-                    setAddingTag(listItem.id);
+                    setAddingListTag(listItem.id);
                   }}
                 >
                   Add tag

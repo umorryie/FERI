@@ -32,6 +32,10 @@ export const Lists = ({ setListItems, listItems }) => {
   const [newEditingListName, setNewEditingListName] = React.useState("");
   const [newListNameError, setNewListNameError] = React.useState(false);
   const [editingNewListName, setEditingNewListName] = React.useState(false);
+  const [newEditingChorName, setNewEditingChorName] = React.useState("");
+  const [newChorEditingNameError, setNewChorEditingNameError] =
+    React.useState(false);
+  const [editingNewChorName, setEditingNewChorName] = React.useState(false);
 
   const handleChange = (expandedValue) => {
     setExpanded(expandedValue);
@@ -481,8 +485,76 @@ export const Lists = ({ setListItems, listItems }) => {
               sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
               variant="h5"
             >
-              {chor.name}
-              <EditIcon />
+              {editingNewChorName === chor.id ? (
+                <TextField
+                  required
+                  error={newChorEditingNameError}
+                  id="outlined-required"
+                  label={
+                    newChorEditingNameError
+                      ? "Empty not valid"
+                      : "New chor name"
+                  }
+                  onChange={(e) => setNewEditingChorName(e.target.value)}
+                />
+              ) : chor.done === true ? (
+                <del>{chor.name}</del>
+              ) : (
+                chor.name
+              )}
+              {editingNewChorName === chor.id ? (
+                <div>
+                  <CloseIcon
+                    sx={{ margin: "auto" }}
+                    color="error"
+                    onClick={() => setEditingNewChorName(false)}
+                  />
+                  <Button
+                    style={{ margin: "20px" }}
+                    variant="contained"
+                    endIcon={<AddIcon />}
+                    onClick={async () => {
+                      if (newEditingChorName === "") {
+                        setNewChorEditingNameError(true);
+                        return;
+                      }
+                      const response = await updateChor(
+                        chor.id,
+                        newEditingChorName,
+                        null,
+                        null,
+                        null
+                      );
+
+                      if (response) {
+                        const updatedListItems = listItems.map((list) => {
+                          const updatedChors = list.chor.map((listChor) => {
+                            if (listChor.id === chor.id) {
+                              listChor.name = newEditingChorName;
+                            }
+                            return listChor;
+                          });
+
+                          list.chor = updatedChors;
+                          return list;
+                        });
+                        setListItems(updatedListItems);
+                      }
+                      setEditingNewChorName(false);
+                      setNewChorEditingNameError(false);
+                      setNewEditingChorName("");
+                    }}
+                  >
+                    Save name
+                  </Button>
+                </div>
+              ) : (
+                <EditIcon
+                  onClick={() => {
+                    setEditingNewChorName(chor.id);
+                  }}
+                />
+              )}
             </Typography>
             <FormControlLabel
               control={
@@ -638,6 +710,7 @@ export const Lists = ({ setListItems, listItems }) => {
                       await updateList(listItem.id, newEditingListName);
                       setEditingNewListName(false);
                       setNewListNameError(false);
+                      setNewEditingListName("");
                     }}
                   >
                     Save name

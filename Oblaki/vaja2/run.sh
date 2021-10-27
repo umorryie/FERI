@@ -1,8 +1,9 @@
 #!/bin/bash
-cat $0 | sed -n -e 61,73p > Dockerfile
+cat $0 | sed -n -e 63,75p > Dockerfile
 
 N=100
 rac_array=()
+out_file=out2.txt
 
 echo " StrictHostKeyChecking no" > /home/matej/.ssh/config
 sudo docker rm -f $(docker ps -a -q)
@@ -51,7 +52,8 @@ do
     dockerIp=$(sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $rac)
 
     paralel_command=$(echo ssh sshuser@$dockerIp parallel-ssh $paralel_racs)
-    $paralel_command
+    echo "Executing: $paralel_command" >> $out_file
+    $paralel_command >> $out_file
 done
 
 rm -rf id_rsa.pub

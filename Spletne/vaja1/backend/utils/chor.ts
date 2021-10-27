@@ -21,6 +21,7 @@ export const insertChor = async (
     newChor.until = until;
     newChor.list = list;
     newChor.alert_before_hours = alertBeforeHours;
+    newChor.tags = [];
     const insertedChor = await chorRepository.save(newChor);
 
     return insertedChor;

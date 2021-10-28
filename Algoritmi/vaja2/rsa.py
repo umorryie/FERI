@@ -113,13 +113,17 @@ if __name__ == "__main__":
         for bit_chunk in from_array_to_chunk_array(bits_arrays, encode_length):
             M = from_bit_to_int(bit_chunk)
             C = miller_rabin.modular_exponentiation(M, e, n)
-            #print_bits(from_int_to_bit(C))
+            # print_bits(from_int_to_bit(C))
             encrypted_value = from_bits_to_string(from_int_to_bit(C))
             encrypted_file = open(ENCRYPTION_FILE, "a")
             encrypted_file.write(encrypted_value)
             encrypted_file.close()
         print("Message encrypted")
     elif len(sys.argv) == 2 and sys.argv[1] == "decrypt":
+        # To create new empty file
+        with open(DENCRYPTION_FILE, "w") as fp:
+            pass
+
         with open(ENCRYPTION_DECRYPTION_BIT_LENGTH, "r") as f:
             encode_length = int(f.readlines()[0])
 
@@ -137,7 +141,7 @@ if __name__ == "__main__":
             C = from_bit_to_int(bit_chunk)
             M = miller_rabin.modular_exponentiation(C, d, n)
             decrypted_value = from_bits_to_string(from_int_to_bit(M))
-            #print_bits(from_int_to_bit(M))
+            # print_bits(from_int_to_bit(M))
             decrypted_file = open(DENCRYPTION_FILE, "a")
             decrypted_file.write(decrypted_value)
             decrypted_file.close()

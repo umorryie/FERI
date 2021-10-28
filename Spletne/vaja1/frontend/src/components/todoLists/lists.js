@@ -294,6 +294,7 @@ export const Lists = ({ setListItems, listItems }) => {
               onClick={() => {
                 setAddingListTag(false);
                 setNewListTagNameError(false);
+                setNewListTagName("");
               }}
             />
           </div>
@@ -308,6 +309,7 @@ export const Lists = ({ setListItems, listItems }) => {
               insertListTag(id, newListTagName);
               setAddingListTag(false);
               setNewListTagNameError(false);
+              setNewListTagName("");
             }}
           >
             Save tag
@@ -378,6 +380,7 @@ export const Lists = ({ setListItems, listItems }) => {
               onClick={() => {
                 setAddingChorTag(false);
                 setNewChorTagNameError(false);
+                setNewChorTagName("");
               }}
             />
           </div>
@@ -392,6 +395,7 @@ export const Lists = ({ setListItems, listItems }) => {
               insertChorTag(id, newChorTagName);
               setAddingChorTag(false);
               setNewChorTagNameError(false);
+              setNewChorTagName("");
             }}
           >
             Save tag
@@ -656,113 +660,116 @@ export const Lists = ({ setListItems, listItems }) => {
                     </Button>
                   </div>
                 ) : (
-                  <EditIcon
-                    onClick={() => {
-                      setEditingNewChorName(chor.id);
-                    }}
-                  />
+                  <div>
+                    <EditIcon
+                      onClick={() => {
+                        setEditingNewChorName(chor.id);
+                      }}
+                    />
+                    <DeleteIcon
+                      sx={{ margin: "auto" }}
+                      color="error"
+                      onClick={() => deleteChor(chor.id, listItem.id)}
+                    />
+                  </div>
                 )}
               </Typography>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={chor.done}
-                    onClick={() => {
-                      updateListItems(chor.id, !chor.done);
-                    }}
-                  />
-                }
-                label="Done"
-              />
-              <div style={{ margin: "auto" }}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                    inputProps={{
-                      style:
-                        chor.done === true
-                          ? {}
-                          : new Date(chor.until) < new Date()
-                          ? {
-                              backgroundColor: "#e13f3f",
-                            }
-                          : (new Date(chor.until) - new Date()) / 3600000 >
-                            chor.alert_before_hours
-                          ? {}
-                          : {
-                              backgroundColor: "#e13f3f",
-                            },
-                    }}
-                    label="Todo until"
-                    value={new Date(chor.until)}
-                    onChange={async (newValue) => {
-                      const response = await updateChor(
-                        chor.id,
-                        null,
-                        newValue,
-                        null,
-                        null
-                      );
+              <div>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={chor.done}
+                      onClick={() => {
+                        updateListItems(chor.id, !chor.done);
+                      }}
+                    />
+                  }
+                  label="Done"
+                />
+                <div style={{ margin: "15px" }}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      inputProps={{
+                        style:
+                          chor.done === true
+                            ? {}
+                            : new Date(chor.until) < new Date()
+                            ? {
+                                backgroundColor: "#e13f3f",
+                              }
+                            : (new Date(chor.until) - new Date()) / 3600000 >
+                              chor.alert_before_hours
+                            ? {}
+                            : {
+                                backgroundColor: "#e13f3f",
+                              },
+                      }}
+                      label="Todo until"
+                      value={new Date(chor.until)}
+                      onChange={async (newValue) => {
+                        const response = await updateChor(
+                          chor.id,
+                          null,
+                          newValue,
+                          null,
+                          null
+                        );
 
-                      if (response) {
-                        const updatedListItems = listItems.map((list) => {
-                          const updatedChors = list.chor.map((listChor) => {
-                            if (listChor.id === chor.id) {
-                              listChor.until = newValue;
-                            }
-                            return listChor;
+                        if (response) {
+                          const updatedListItems = listItems.map((list) => {
+                            const updatedChors = list.chor.map((listChor) => {
+                              if (listChor.id === chor.id) {
+                                listChor.until = newValue;
+                              }
+                              return listChor;
+                            });
+
+                            list.chor = updatedChors;
+                            return list;
                           });
+                          setListItems(updatedListItems);
+                        }
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </div>
+                <TextField
+                  style={{ margin: "15px" }}
+                  label="Alert before X hours"
+                  value={chor.alert_before_hours}
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                  onChange={async (e) => {
+                    const updatedListItems = listItems.map((list) => {
+                      const updatedChors = list.chor.map((listChor) => {
+                        if (listChor.id === chor.id) {
+                          listChor.alert_before_hours =
+                            parseInt(e.target.value) || "";
+                        }
+                        return listChor;
+                      });
 
-                          list.chor = updatedChors;
-                          return list;
-                        });
-                        setListItems(updatedListItems);
-                      }
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </LocalizationProvider>
-              </div>
-
-              <TextField
-                style={{ margin: "auto" }}
-                label="Alert before X hours"
-                value={chor.alert_before_hours}
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                onChange={async (e) => {
-                  const updatedListItems = listItems.map((list) => {
-                    const updatedChors = list.chor.map((listChor) => {
-                      if (listChor.id === chor.id) {
-                        listChor.alert_before_hours =
-                          parseInt(e.target.value) || "";
-                      }
-                      return listChor;
+                      list.chor = updatedChors;
+                      return list;
                     });
+                    setListItems(updatedListItems);
 
-                    list.chor = updatedChors;
-                    return list;
-                  });
-                  setListItems(updatedListItems);
+                    if (!parseInt(e.target.value)) {
+                      return;
+                    }
 
-                  if (!parseInt(e.target.value)) {
-                    return;
-                  }
-
-                  const response = await updateChor(
-                    chor.id,
-                    null,
-                    null,
-                    null,
-                    parseInt(e.target.value)
-                  );
-                  if (response) {
-                  }
-                }}
-              />
-              <DeleteIcon
-                sx={{ margin: "auto" }}
-                color="error"
-                onClick={() => deleteChor(chor.id, listItem.id)}
-              />
+                    const response = await updateChor(
+                      chor.id,
+                      null,
+                      null,
+                      null,
+                      parseInt(e.target.value)
+                    );
+                    if (response) {
+                    }
+                  }}
+                />
+              </div>
             </AccordionDetails>
           </Box>
         );
@@ -794,7 +801,10 @@ export const Lists = ({ setListItems, listItems }) => {
                 color="error"
                 onClick={() => deleteList(listItem.id)}
               />
-              <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
+              <Typography
+                variant="h4"
+                sx={{ width: "80%", flexShrink: 0, margin: "auto" }}
+              >
                 {editingNewListName === listItem.id ? (
                   <TextField
                     required

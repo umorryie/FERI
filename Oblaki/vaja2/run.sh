@@ -1,7 +1,7 @@
 #!/bin/bash
 cat $0 | sed -n -e 63,75p > Dockerfile
 
-N=100
+N=500
 rac_array=()
 out_file=out2.txt
 
@@ -31,7 +31,7 @@ do
             ssh sshuser@$dockerIp "echo \"`cat temp.pub`\" >> .ssh/authorized_keys"
         fi
     done
-    #echo $(cat temp.pub) >> /home/matej/.ssh/authorized_keys
+    echo "Added authorized_keys to $rac"
     rm -rf temp.pub
 done
 

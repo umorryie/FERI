@@ -31,6 +31,12 @@ def modular_linear_equation_solver(a: int, b: int, n: int) -> int:
     d = extended_e.extended_euclid(a, n)
 
     if d % b == 0:
+        # TODO
+        # I always get x=0 with my n_x, n_y, n_d
+        # I get floats without n_x, n_y, n_d
+        #if extended_e.x != 0:
+        #    print(extended_e.x)
+        # print(f"x: {extended_e.x}, b: {b}, d:{d},a: {a}, n:{n}")
         return (extended_e.x * (b / d)) % n
     else:
         print("Modular linear equation is not solvable")

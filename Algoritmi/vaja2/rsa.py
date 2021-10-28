@@ -77,6 +77,16 @@ def from_array_to_chunk_array(iterable_array, chunk_size):
     return results
 
 
+# TODO: Delete this helper function
+def print_bits(bit_array: list):
+    print_string = ""
+    for i in range(len(bit_array)):
+        print_string += str(bit_array[i])
+        if i % 8 == 7:
+            print_string += " "
+    print(print_string)
+
+
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "encrypt" and ".txt" in sys.argv[2]:
         p, q = get_two_prime_numbers(bit_length=32)
@@ -98,19 +108,18 @@ if __name__ == "__main__":
         with open(filename, "r") as f:
             lines = f.readlines()
         bits_arrays = from_string_to_bits(lines[0])
+        # WORKS UNTIL HERE
 
         for bit_chunk in from_array_to_chunk_array(bits_arrays, encode_length):
             M = from_bit_to_int(bit_chunk)
             C = miller_rabin.modular_exponentiation(M, e, n)
+            #print_bits(from_int_to_bit(C))
             encrypted_value = from_bits_to_string(from_int_to_bit(C))
             encrypted_file = open(ENCRYPTION_FILE, "a")
             encrypted_file.write(encrypted_value)
             encrypted_file.close()
         print("Message encrypted")
     elif len(sys.argv) == 2 and sys.argv[1] == "decrypt":
-        with open(DENCRYPTION_FILE, "w") as fp:
-            pass
-
         with open(ENCRYPTION_DECRYPTION_BIT_LENGTH, "r") as f:
             encode_length = int(f.readlines()[0])
 
@@ -128,6 +137,7 @@ if __name__ == "__main__":
             C = from_bit_to_int(bit_chunk)
             M = miller_rabin.modular_exponentiation(C, d, n)
             decrypted_value = from_bits_to_string(from_int_to_bit(M))
+            #print_bits(from_int_to_bit(M))
             decrypted_file = open(DENCRYPTION_FILE, "a")
             decrypted_file.write(decrypted_value)
             decrypted_file.close()

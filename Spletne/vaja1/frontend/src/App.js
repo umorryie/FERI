@@ -8,7 +8,7 @@ function App() {
   const [listItems, setListItems] = React.useState([]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ width: "90%", margin: "auto" }}>
       <div style={{ margin: "30px" }}>
         <Text
           listItems={listItems}

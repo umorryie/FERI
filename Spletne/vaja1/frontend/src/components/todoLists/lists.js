@@ -498,132 +498,207 @@ export const Lists = ({ setListItems, listItems }) => {
     const lists = listItems.map((listItem, index) => {
       const chors = listItem.chor.map((chor, index) => {
         return (
-          <AccordionDetails key={index} sx={{ display: "flex" }}>
-            <div>
-              {addingChorTag === chor.id ? (
-                addChorTag(chor.id)
-              ) : editingNewChorTagName === chor.id ? null : (
-                <Button
-                  style={{ margin: "20px" }}
-                  variant="contained"
-                  endIcon={<AddIcon />}
-                  onClick={() => {
-                    setAddingChorTag(chor.id);
-                  }}
-                >
-                  Add tag
-                </Button>
-              )}
-              {editingNewChorTagName === chor.id ? (
-                <div>
+          <Box sx={{ boxShadow: 3, margin: "20px" }} key={index}>
+            <AccordionDetails key={index} sx={{ display: "flex" }}>
+              <div>
+                {addingChorTag === chor.id ? (
+                  addChorTag(chor.id)
+                ) : editingNewChorTagName === chor.id ? null : (
+                  <Button
+                    style={{ margin: "20px" }}
+                    variant="contained"
+                    endIcon={<AddIcon />}
+                    onClick={() => {
+                      setAddingChorTag(chor.id);
+                    }}
+                  >
+                    Add tag
+                  </Button>
+                )}
+                {editingNewChorTagName === chor.id ? (
+                  <div>
+                    <TextField
+                      required
+                      error={newChorTagEditingNameError}
+                      id="outlined-required"
+                      label={
+                        newChorTagEditingNameError
+                          ? "Empty not valid"
+                          : "New tag name"
+                      }
+                      onChange={(e) => setNewEditingChorTagName(e.target.value)}
+                    />
+                    <div>
+                      <CloseIcon
+                        sx={{ margin: "auto" }}
+                        color="error"
+                        onClick={() => {
+                          setEditingNewChorTagName(false);
+                          setNewChorTagEditingNameError(false);
+                          setNewEditingChorTagName("");
+                        }}
+                      />
+                      <Button
+                        style={{ margin: "20px" }}
+                        variant="contained"
+                        endIcon={<AddIcon />}
+                        onClick={async () => {
+                          if (newEditingChorTagName === "") {
+                            setNewChorTagEditingNameError(true);
+                            return;
+                          }
+                          updateTag(
+                            currentTagId,
+                            newEditingChorTagName,
+                            "chor"
+                          );
+                          setEditingNewChorTagName(false);
+                          setNewChorTagEditingNameError(false);
+                          setNewEditingChorTagName("");
+                        }}
+                      >
+                        Update
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  chor.tags.map((el, index) => {
+                    return (
+                      <Stack key={index} direction="row" spacing={1}>
+                        <Chip
+                          label={el.name}
+                          onDelete={() => {}}
+                          deleteIcon={
+                            <div>
+                              <EditIcon
+                                onClick={() => {
+                                  setCurrentTagId(el.id);
+                                  setEditingNewChorTagName(chor.id);
+                                }}
+                              />
+                              <DeleteIcon
+                                onClick={() => deleteTag(el.id, "chor")}
+                              />
+                            </div>
+                          }
+                          variant="outlined"
+                        />
+                      </Stack>
+                    );
+                  })
+                )}
+              </div>
+              <Typography
+                sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
+                variant="h5"
+              >
+                {editingNewChorName === chor.id ? (
                   <TextField
                     required
-                    error={newChorTagEditingNameError}
+                    error={newChorEditingNameError}
                     id="outlined-required"
                     label={
-                      newChorTagEditingNameError
+                      newChorEditingNameError
                         ? "Empty not valid"
-                        : "New tag name"
+                        : "New chor name"
                     }
-                    onChange={(e) => setNewEditingChorTagName(e.target.value)}
+                    onChange={(e) => setNewEditingChorName(e.target.value)}
                   />
+                ) : chor.done === true ? (
+                  <del>{chor.name}</del>
+                ) : (
+                  chor.name
+                )}
+                {editingNewChorName === chor.id ? (
                   <div>
                     <CloseIcon
                       sx={{ margin: "auto" }}
                       color="error"
-                      onClick={() => {
-                        setEditingNewChorTagName(false);
-                        setNewChorTagEditingNameError(false);
-                        setNewEditingChorTagName("");
-                      }}
+                      onClick={() => setEditingNewChorName(false)}
                     />
                     <Button
                       style={{ margin: "20px" }}
                       variant="contained"
                       endIcon={<AddIcon />}
                       onClick={async () => {
-                        if (newEditingChorTagName === "") {
-                          setNewChorTagEditingNameError(true);
+                        if (newEditingChorName === "") {
+                          setNewChorEditingNameError(true);
                           return;
                         }
-                        updateTag(currentTagId, newEditingChorTagName, "chor");
-                        setEditingNewChorTagName(false);
-                        setNewChorTagEditingNameError(false);
-                        setNewEditingChorTagName("");
+                        const response = await updateChor(
+                          chor.id,
+                          newEditingChorName,
+                          null,
+                          null,
+                          null
+                        );
+
+                        if (response) {
+                          const updatedListItems = listItems.map((list) => {
+                            const updatedChors = list.chor.map((listChor) => {
+                              if (listChor.id === chor.id) {
+                                listChor.name = newEditingChorName;
+                              }
+                              return listChor;
+                            });
+
+                            list.chor = updatedChors;
+                            return list;
+                          });
+                          setListItems(updatedListItems);
+                        }
+                        setEditingNewChorName(false);
+                        setNewChorEditingNameError(false);
+                        setNewEditingChorName("");
                       }}
                     >
-                      Update
+                      Save name
                     </Button>
                   </div>
-                </div>
-              ) : (
-                chor.tags.map((el, index) => {
-                  return (
-                    <Stack key={index} direction="row" spacing={1}>
-                      <Chip
-                        label={el.name}
-                        onDelete={() => {}}
-                        deleteIcon={
-                          <div>
-                            <EditIcon
-                              onClick={() => {
-                                setCurrentTagId(el.id);
-                                setEditingNewChorTagName(chor.id);
-                              }}
-                            />
-                            <DeleteIcon
-                              onClick={() => deleteTag(el.id, "chor")}
-                            />
-                          </div>
-                        }
-                        variant="outlined"
-                      />
-                    </Stack>
-                  );
-                })
-              )}
-            </div>
-            <Typography
-              sx={{ width: "33%", flexShrink: 0, margin: "auto" }}
-              variant="h5"
-            >
-              {editingNewChorName === chor.id ? (
-                <TextField
-                  required
-                  error={newChorEditingNameError}
-                  id="outlined-required"
-                  label={
-                    newChorEditingNameError
-                      ? "Empty not valid"
-                      : "New chor name"
-                  }
-                  onChange={(e) => setNewEditingChorName(e.target.value)}
-                />
-              ) : chor.done === true ? (
-                <del>{chor.name}</del>
-              ) : (
-                chor.name
-              )}
-              {editingNewChorName === chor.id ? (
-                <div>
-                  <CloseIcon
-                    sx={{ margin: "auto" }}
-                    color="error"
-                    onClick={() => setEditingNewChorName(false)}
+                ) : (
+                  <EditIcon
+                    onClick={() => {
+                      setEditingNewChorName(chor.id);
+                    }}
                   />
-                  <Button
-                    style={{ margin: "20px" }}
-                    variant="contained"
-                    endIcon={<AddIcon />}
-                    onClick={async () => {
-                      if (newEditingChorName === "") {
-                        setNewChorEditingNameError(true);
-                        return;
-                      }
+                )}
+              </Typography>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={chor.done}
+                    onClick={() => {
+                      updateListItems(chor.id, !chor.done);
+                    }}
+                  />
+                }
+                label="Done"
+              />
+              <div style={{ margin: "auto" }}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    inputProps={{
+                      style:
+                        chor.done === true
+                          ? {}
+                          : new Date(chor.until) < new Date()
+                          ? {
+                              backgroundColor: "#e13f3f",
+                            }
+                          : (new Date(chor.until) - new Date()) / 3600000 >
+                            chor.alert_before_hours
+                          ? {}
+                          : {
+                              backgroundColor: "#e13f3f",
+                            },
+                    }}
+                    label="Todo until"
+                    value={new Date(chor.until)}
+                    onChange={async (newValue) => {
                       const response = await updateChor(
                         chor.id,
-                        newEditingChorName,
                         null,
+                        newValue,
                         null,
                         null
                       );
@@ -632,7 +707,7 @@ export const Lists = ({ setListItems, listItems }) => {
                         const updatedListItems = listItems.map((list) => {
                           const updatedChors = list.chor.map((listChor) => {
                             if (listChor.id === chor.id) {
-                              listChor.name = newEditingChorName;
+                              listChor.until = newValue;
                             }
                             return listChor;
                           });
@@ -642,285 +717,232 @@ export const Lists = ({ setListItems, listItems }) => {
                         });
                         setListItems(updatedListItems);
                       }
-                      setEditingNewChorName(false);
-                      setNewChorEditingNameError(false);
-                      setNewEditingChorName("");
                     }}
-                  >
-                    Save name
-                  </Button>
-                </div>
-              ) : (
-                <EditIcon
-                  onClick={() => {
-                    setEditingNewChorName(chor.id);
-                  }}
-                />
-              )}
-            </Typography>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={chor.done}
-                  onClick={() => {
-                    updateListItems(chor.id, !chor.done);
-                  }}
-                />
-              }
-              label="Done"
-            />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                inputProps={{
-                  style:
-                    chor.done === true
-                      ? {}
-                      : new Date(chor.until) < new Date()
-                      ? {
-                          backgroundColor: "#e13f3f",
-                        }
-                      : (new Date(chor.until) - new Date()) / 3600000 >
-                        chor.alert_before_hours
-                      ? {}
-                      : {
-                          backgroundColor: "#e13f3f",
-                        },
-                }}
-                label="Todo until"
-                value={new Date(chor.until)}
-                onChange={async (newValue) => {
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+
+              <TextField
+                style={{ margin: "auto" }}
+                label="Alert before X hours"
+                value={chor.alert_before_hours}
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                onChange={async (e) => {
+                  const updatedListItems = listItems.map((list) => {
+                    const updatedChors = list.chor.map((listChor) => {
+                      if (listChor.id === chor.id) {
+                        listChor.alert_before_hours =
+                          parseInt(e.target.value) || "";
+                      }
+                      return listChor;
+                    });
+
+                    list.chor = updatedChors;
+                    return list;
+                  });
+                  setListItems(updatedListItems);
+
+                  if (!parseInt(e.target.value)) {
+                    return;
+                  }
+
                   const response = await updateChor(
                     chor.id,
                     null,
-                    newValue,
                     null,
-                    null
+                    null,
+                    parseInt(e.target.value)
                   );
-
                   if (response) {
-                    const updatedListItems = listItems.map((list) => {
-                      const updatedChors = list.chor.map((listChor) => {
-                        if (listChor.id === chor.id) {
-                          listChor.until = newValue;
-                        }
-                        return listChor;
-                      });
-
-                      list.chor = updatedChors;
-                      return list;
-                    });
-                    setListItems(updatedListItems);
                   }
                 }}
-                renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider>
-
-            <TextField
-              label="Alert before X hours"
-              value={chor.alert_before_hours}
-              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-              onChange={async (e) => {
-                const updatedListItems = listItems.map((list) => {
-                  const updatedChors = list.chor.map((listChor) => {
-                    if (listChor.id === chor.id) {
-                      listChor.alert_before_hours =
-                        parseInt(e.target.value) || "";
-                    }
-                    return listChor;
-                  });
-
-                  list.chor = updatedChors;
-                  return list;
-                });
-                setListItems(updatedListItems);
-
-                if (!parseInt(e.target.value)) {
-                  return;
-                }
-
-                const response = await updateChor(
-                  chor.id,
-                  null,
-                  null,
-                  null,
-                  parseInt(e.target.value)
-                );
-                if (response) {
-                }
-              }}
-            />
-            <DeleteIcon
-              sx={{ margin: "auto" }}
-              color="error"
-              onClick={() => deleteChor(chor.id, listItem.id)}
-            />
-          </AccordionDetails>
+              <DeleteIcon
+                sx={{ margin: "auto" }}
+                color="error"
+                onClick={() => deleteChor(chor.id, listItem.id)}
+              />
+            </AccordionDetails>
+          </Box>
         );
       });
       return (
-        <Accordion expanded={expanded === index} key={index}>
-          <AccordionSummary
-            expandIcon={
-              <ExpandMoreIcon
-                // If expanded is false, then set expanded to current index to open list
-                // If expanded is not false then check if index is equal to expanded then close current expanded list
-                // If expanded is not false and index is not equal to expanded then close current expanded list and open new one
-                onClick={() =>
-                  handleChange(
-                    expanded === false
-                      ? index
-                      : expanded === index
-                      ? false
-                      : index
-                  )
-                }
-              />
-            }
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
-            <DeleteIcon color="error" onClick={() => deleteList(listItem.id)} />
-            <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
-              {editingNewListName === listItem.id ? (
-                <TextField
-                  required
-                  error={newListNameError}
-                  id="outlined-required"
-                  label={newListNameError ? "Empty not valid" : "New list name"}
-                  onChange={(e) => setNewEditingListName(e.target.value)}
+        <Box key={index} sx={{ boxShadow: 3, margin: "20px" }}>
+          <Accordion expanded={expanded === index} key={index}>
+            <AccordionSummary
+              expandIcon={
+                <ExpandMoreIcon
+                  // If expanded is false, then set expanded to current index to open list
+                  // If expanded is not false then check if index is equal to expanded then close current expanded list
+                  // If expanded is not false and index is not equal to expanded then close current expanded list and open new one
+                  onClick={() =>
+                    handleChange(
+                      expanded === false
+                        ? index
+                        : expanded === index
+                        ? false
+                        : index
+                    )
+                  }
                 />
-              ) : (
-                listItem.name
-              )}
-              {editingNewListName === listItem.id ? (
-                <div>
-                  <CloseIcon
-                    sx={{ margin: "auto" }}
-                    color="error"
-                    onClick={() => setEditingNewListName(false)}
-                  />
-                  <Button
-                    style={{ margin: "20px" }}
-                    variant="contained"
-                    endIcon={<AddIcon />}
-                    onClick={async () => {
-                      if (newEditingListName === "") {
-                        setNewListNameError(true);
-                        return;
-                      }
-                      await updateList(listItem.id, newEditingListName);
-                      setEditingNewListName(false);
-                      setNewListNameError(false);
-                      setNewEditingListName("");
-                    }}
-                  >
-                    Save name
-                  </Button>
-                </div>
-              ) : (
-                <EditIcon onClick={() => setEditingNewListName(listItem.id)} />
-              )}
-              {addingListTag === listItem.id ? (
-                addListTag(listItem.id)
-              ) : editingNewListName === listItem.id ? null : (
-                <Button
-                  style={{ margin: "20px" }}
-                  variant="contained"
-                  endIcon={<AddIcon />}
-                  onClick={() => {
-                    setAddingListTag(listItem.id);
-                  }}
-                >
-                  Add tag
-                </Button>
-              )}
-            </Typography>
-            <div>
-              {editingNewListTagName === listItem.id ? (
-                <div>
+              }
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <DeleteIcon
+                color="error"
+                onClick={() => deleteList(listItem.id)}
+              />
+              <Typography variant="h4" sx={{ width: "80%", flexShrink: 0 }}>
+                {editingNewListName === listItem.id ? (
                   <TextField
                     required
-                    error={newListTagEditingNameError}
+                    error={newListNameError}
                     id="outlined-required"
                     label={
-                      newListTagEditingNameError
-                        ? "Empty not valid"
-                        : "New tag name"
+                      newListNameError ? "Empty not valid" : "New list name"
                     }
-                    onChange={(e) => setNewEditingListTagName(e.target.value)}
+                    onChange={(e) => setNewEditingListName(e.target.value)}
                   />
+                ) : (
+                  listItem.name
+                )}
+                {editingNewListName === listItem.id ? (
                   <div>
                     <CloseIcon
                       sx={{ margin: "auto" }}
                       color="error"
-                      onClick={() => {
-                        setEditingNewListTagName(false);
-                        setNewListTagEditingNameError(false);
-                        setNewEditingListTagName("");
-                      }}
+                      onClick={() => setEditingNewListName(false)}
                     />
                     <Button
                       style={{ margin: "20px" }}
                       variant="contained"
                       endIcon={<AddIcon />}
                       onClick={async () => {
-                        if (newEditingListTagName === "") {
-                          setNewListTagEditingNameError(true);
+                        if (newEditingListName === "") {
+                          setNewListNameError(true);
                           return;
                         }
-                        updateTag(currentTagId, newEditingListTagName, "list");
-                        setEditingNewListTagName(false);
-                        setNewListTagEditingNameError(false);
-                        setNewEditingListTagName("");
+                        await updateList(listItem.id, newEditingListName);
+                        setEditingNewListName(false);
+                        setNewListNameError(false);
+                        setNewEditingListName("");
                       }}
                     >
-                      Update name
+                      Save name
                     </Button>
                   </div>
-                </div>
-              ) : (
-                listItem.tags.map((el, index) => {
-                  return (
-                    <Stack key={index} direction="row" spacing={1}>
-                      <Chip
-                        label={el.name}
-                        onDelete={() => {}}
-                        deleteIcon={
-                          <div>
-                            <EditIcon
-                              onClick={() => {
-                                setCurrentTagId(el.id);
-                                setEditingNewListTagName(listItem.id);
-                              }}
-                            />
-                            <DeleteIcon
-                              onClick={() => deleteTag(el.id, "list")}
-                            />
-                          </div>
-                        }
-                        variant="outlined"
+                ) : (
+                  <EditIcon
+                    onClick={() => setEditingNewListName(listItem.id)}
+                  />
+                )}
+                {addingListTag === listItem.id ? (
+                  addListTag(listItem.id)
+                ) : editingNewListName === listItem.id ? null : (
+                  <Button
+                    style={{ margin: "20px" }}
+                    variant="contained"
+                    endIcon={<AddIcon />}
+                    onClick={() => {
+                      setAddingListTag(listItem.id);
+                    }}
+                  >
+                    Add tag
+                  </Button>
+                )}
+              </Typography>
+              <div>
+                {editingNewListTagName === listItem.id ? (
+                  <div>
+                    <TextField
+                      required
+                      error={newListTagEditingNameError}
+                      id="outlined-required"
+                      label={
+                        newListTagEditingNameError
+                          ? "Empty not valid"
+                          : "New tag name"
+                      }
+                      onChange={(e) => setNewEditingListTagName(e.target.value)}
+                    />
+                    <div>
+                      <CloseIcon
+                        sx={{ margin: "auto" }}
+                        color="error"
+                        onClick={() => {
+                          setEditingNewListTagName(false);
+                          setNewListTagEditingNameError(false);
+                          setNewEditingListTagName("");
+                        }}
                       />
-                    </Stack>
-                  );
-                })
-              )}
-            </div>
-          </AccordionSummary>
-          {addingChor ? null : (
-            <Button
-              style={{ margin: "20px" }}
-              variant="contained"
-              endIcon={<AddIcon />}
-              onClick={() => {
-                setAddingChor(true);
-              }}
-            >
-              Add chor
-            </Button>
-          )}
-          {addingChor ? addChorHtml(listItem.id) : chors}
-        </Accordion>
+                      <Button
+                        style={{ margin: "20px" }}
+                        variant="contained"
+                        endIcon={<AddIcon />}
+                        onClick={async () => {
+                          if (newEditingListTagName === "") {
+                            setNewListTagEditingNameError(true);
+                            return;
+                          }
+                          updateTag(
+                            currentTagId,
+                            newEditingListTagName,
+                            "list"
+                          );
+                          setEditingNewListTagName(false);
+                          setNewListTagEditingNameError(false);
+                          setNewEditingListTagName("");
+                        }}
+                      >
+                        Update name
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  listItem.tags.map((el, index) => {
+                    return (
+                      <Stack key={index} direction="row" spacing={1}>
+                        <Chip
+                          label={el.name}
+                          onDelete={() => {}}
+                          deleteIcon={
+                            <div>
+                              <EditIcon
+                                onClick={() => {
+                                  setCurrentTagId(el.id);
+                                  setEditingNewListTagName(listItem.id);
+                                }}
+                              />
+                              <DeleteIcon
+                                onClick={() => deleteTag(el.id, "list")}
+                              />
+                            </div>
+                          }
+                          variant="outlined"
+                        />
+                      </Stack>
+                    );
+                  })
+                )}
+              </div>
+            </AccordionSummary>
+            {addingChor ? null : (
+              <Button
+                style={{ margin: "20px" }}
+                variant="contained"
+                endIcon={<AddIcon />}
+                onClick={() => {
+                  setAddingChor(true);
+                }}
+              >
+                Add chor
+              </Button>
+            )}
+            {addingChor ? addChorHtml(listItem.id) : chors}
+          </Accordion>
+        </Box>
       );
     });
 

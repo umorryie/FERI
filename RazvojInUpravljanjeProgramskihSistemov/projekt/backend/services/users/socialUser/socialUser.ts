@@ -19,7 +19,7 @@ export class SocialUser implements UserService {
         const client: PoolClient = await getPool().connect();
         try {
             await client.query(DbConstants.BEGIN);
-            const cur = await client.query('select * from sistemi_public.register_social_media_user($1, $2, $3)', [
+            const cur = await client.query('select * from sistemi_private.register_social_media_user($1, $2, $3)', [
                 this.username,
                 this.profileId,
                 this.email,

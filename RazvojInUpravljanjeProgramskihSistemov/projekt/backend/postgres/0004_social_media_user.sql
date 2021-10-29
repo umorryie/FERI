@@ -9,7 +9,7 @@ COMMENT ON COLUMN sistemi_private.social_media_users.profile_id IS 'Unique ident
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-create or replace function sistemi_public.register_social_media_user(
+create or replace function sistemi_private.register_social_media_user(
   new_username text,
   profile_id_identifier text,
   email_address text
@@ -44,7 +44,7 @@ begin
 end;
 $$ language plpgsql strict security definer;
 
-comment on function sistemi_public.register_social_media_user(text, text, text) is 'Registers not registered user from social media and returns token';
+comment on function sistemi_private.register_social_media_user(text, text, text) is 'Registers not registered user from social media and returns token';
 
 -- No unique, email checker, not null because the same user can login with multiple social media accounts and include the same email 
 ALTER TABLE sistemi_private.social_media_users ADD COLUMN IF NOT EXISTS email text default null;

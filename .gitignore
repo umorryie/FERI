@@ -11,3 +11,4 @@
 */**/encrypted.txt
 */**/decrypted.txt
 Algoritmi/**/*.pdf
+*/**/.env

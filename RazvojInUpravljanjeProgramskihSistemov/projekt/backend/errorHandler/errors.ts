@@ -1,0 +1,15 @@
+export enum ErrorNames {
+    GLOB_ERROR = 'GlobError',
+    REQUEST_PARAMETER_VALIDATION = 'RequestParameterError',
+    TOKEN_ERROR = 'TokenError',
+    REDIS_ERROR = 'RedisError',
+    SQL = 'SqlError',
+    JSON_PARSE = 'JsonParsingError',
+    GOOGLE = 'GoogleError',
+    FACEBOOK = 'FacebookError',
+    APPLE = 'AppleError',
+    LOGOUT_ERROR = 'LogoutError',
+    INTERNAL_ERROR = 'InternalError',
+    USER_NOT_FOUND = 'UserNotFound',
+    SERVICE_ERROR = 'UnavailableServiceError',
+}

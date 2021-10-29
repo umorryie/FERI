@@ -1,0 +1,15 @@
+export enum Errors {
+    CREDENTIALS_MISSING_INVALID = 'Authentication credentials missing or invalid. Please login again',
+    NO_SUCH_USER = 'No such user or wrong password',
+    CONVERSION_ERROR = 'The data cannot be converted into a user',
+    INVALID_TOKEN = 'Token is invalid',
+    SET_ERROR = 'User data can not be set',
+    SQL = 'Error executing SQL query',
+    INVALID_REFRESH_TOKEN = 'Refresh token is invalid',
+    PARSING_ERROR = 'Json parsing was not successful. An error occurred',
+    SIGN_IN = 'Error trying to sign in',
+    NO_TOKEN = 'Token was not specified',
+    LOGOUT_ERROR = 'Error when trying to log out',
+    SERVICE_ERROR = 'Service unavailable',
+    INTERNAL_ERROR = 'InternalError',
+}

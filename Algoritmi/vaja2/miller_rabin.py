@@ -19,7 +19,7 @@ def LCG(m=2 ** 32, a=69069, b=0, R_0=1):
 # Miller Rabin method
 # Returns False if this number for sure is not primer number
 # Return True if this number probably is prime number. But this probably is still not 100%
-def miller_rabin_method(p, s=1):
+def miller_rabin_method(p, s=3):
     lcg_instance = LCG_CLASS()
 
     if p <= 1:

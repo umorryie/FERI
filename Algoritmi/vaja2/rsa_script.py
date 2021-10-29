@@ -3,7 +3,8 @@ import extended_euclid
 import sys
 import math
 
-
+# TODO datoteko piši v bitih in preberi v bitih
+# TODO spremeni ono za en bit več, en bit majn ko kodiraš, dekodiraš
 PUBLIC_KEY = "pubkey.txt"
 PRIVATE_KEY = "privkey.txt"
 ENCRYPTION_FILE = "encrypted.txt"
@@ -36,7 +37,7 @@ def modular_linear_equation_solver(a: int, b: int, n: int) -> int:
         # I get floats without n_x, n_y, n_d
         #if extended_e.x != 0:
         #    print(extended_e.x)
-        # print(f"x: {extended_e.x}, b: {b}, d:{d},a: {a}, n:{n}")
+        #print(f"x: {extended_e.x}, b: {b}, d:{d},a: {a}, n:{n}")
         return (extended_e.x * (b / d)) % n
     else:
         print("Modular linear equation is not solvable")

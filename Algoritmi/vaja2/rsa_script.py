@@ -89,7 +89,12 @@ def print_bits(bit_array: list):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "encrypt" and ".txt" in sys.argv[2]:
-        p, q = get_two_prime_numbers(bit_length=32)
+        # To create new file
+        with open(ENCRYPTION_FILE, "w") as fp:
+            pass
+
+        # TODO
+        p, q = get_two_prime_numbers(bit_length=11)
         n = q * p
         fi_n = (q - 1) * (p - 1)
         e = get_e(fi_n)
@@ -111,16 +116,29 @@ if __name__ == "__main__":
             lines = f.readlines()
         bits_arrays = from_string_to_bits(lines[0])
         # WORKS UNTIL HERE
-
+        # TODO
+        print_bits(bits_arrays)
+        encoded_bytes = []
+        decode_bytes = []
         for bit_chunk in from_array_to_chunk_array(bits_arrays, encode_length):
             M = from_bit_to_int(bit_chunk)
             C = miller_rabin.modular_exponentiation(M, e, n)
-            # print_bits(from_int_to_bit(C))
+
             encrypted_value = from_bits_to_string(from_int_to_bit(C))
+            # TODO just for testing is this line
+            encoded_bytes = encoded_bytes + from_int_to_bit(C)
             encrypted_file = open(ENCRYPTION_FILE, "a")
             encrypted_file.write(encrypted_value)
             encrypted_file.close()
-        print("Message encrypted")
+        # print("Message encrypted")
+
+        # TODO Tukaj testiramo da se dekodira prav. Sam se nna ...
+        print_bits(encoded_bytes)
+        for bit_chunk in from_array_to_chunk_array(encoded_bytes, encode_length + 1):
+            C = from_bit_to_int(bit_chunk)
+            M = miller_rabin.modular_exponentiation(C, int(d), n)
+            decode_bytes = decode_bytes + from_int_to_bit(M)
+        print_bits(decode_bytes)
     elif len(sys.argv) == 2 and sys.argv[1] == "decrypt":
         # To create new empty file
         with open(DENCRYPTION_FILE, "w") as fp:

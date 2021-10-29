@@ -21,24 +21,17 @@ def get_two_prime_numbers(bit_length: int):
 def get_e(fi_n: int) -> int:
     for i in range(3, fi_n, 2):
         # TODO test extended euclid is works fine
-        extended_e = extended_euclid.ExtendedEuclid()
-        if extended_e.extended_euclid(i, fi_n) == 1:
+        gcd, x, y = extended_euclid.extended_euclid(i, fi_n)
+        if gcd == 1:
             return i
 
 
 # TODO This doest work
 def modular_linear_equation_solver(a: int, b: int, n: int) -> int:
-    extended_e = extended_euclid.ExtendedEuclid()
-    d = extended_e.extended_euclid(a, n)
+    gcd, x, y = extended_euclid.extended_euclid(a, n)
 
-    if d % b == 0:
-        # TODO
-        # I always get x=0 with my n_x, n_y, n_d
-        # I get floats without n_x, n_y, n_d
-        #if extended_e.x != 0:
-        #    print(extended_e.x)
-        #print(f"x: {extended_e.x}, b: {b}, d:{d},a: {a}, n:{n}")
-        return (extended_e.x * (b / d)) % n
+    if gcd % b == 0:
+        return (x * (b / gcd)) % n
     else:
         print("Modular linear equation is not solvable")
 
@@ -107,9 +100,11 @@ if __name__ == "__main__":
             f.write(f"{int(d)} {n}\n")
         print("Public and private key successfully generated")
 
-        encode_length = int(math.log(n, 2)) + 1
+        # For encoding we use down rounded int
+        encode_length = int(math.log(n, 2))
         with open(ENCRYPTION_DECRYPTION_BIT_LENGTH, "w") as f:
-            f.write(str(encode_length))
+            # For dencoding we use up rounded int
+            f.write(str(encode_length + 1))
 
         filename = sys.argv[2]
         with open(filename, "r") as f:

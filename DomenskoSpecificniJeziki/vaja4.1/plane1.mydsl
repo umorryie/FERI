@@ -1,0 +1,21 @@
+plane MyPlane1
+	body
+		size small
+		color gray
+    	cabin 
+			color red
+		doors
+			include false
+	wings
+		number four
+		color black
+		engines
+			number one
+	inscription 	
+		text BOEING
+		onTop true
+		color red
+	backSpoiler
+		tilt small
+	legs
+		show true

@@ -1,0 +1,21 @@
+plane MyPlane2
+	body
+		size large
+		color white
+    	cabin 
+			color blue
+		doors
+			include true
+	wings
+		number four
+		color white
+		engines
+			number three
+	inscription 	
+		text AIRBUS
+		onTop false
+		color blue
+	backSpoiler
+		tilt small
+	legs
+		show true

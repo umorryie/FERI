@@ -1,0 +1,23 @@
+grammar org.xtext.example.mydsl.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
+	
+Model: 'plane' (id=ID)  'body' (bsz=SizeChooser) (bcc=ColorChooser) 'cabin' (bccc=ColorChooser) 'doors' 'include' (bdi=Boolean)
+'wings' (wwnc=WingNumberChooser) (wcc=ColorChooser) 'engines' (wednc=EngineNumberChooser) (wecc=ColorChooser?)
+(i=InscriptionDetails)? 'backSpoiler' (bbstc=BackSpoilerTiltChooser) 'legs' (llsc=LegsShowChooser);
+
+ColorChooser : 'color' Color;
+SizeChooser : 'size' Size;
+WingNumberChooser : 'number' WingNumber;
+EngineNumberChooser : 'number' EngineNumber;
+InscriptionTextChooser : 'text' InscriptionText;
+InscriptionOnTopChooser : 'onTop' Boolean;
+BackSpoilerTiltChooser : 'tilt' Size;
+LegsShowChooser : 'show' Boolean;
+Size : 'small' | 'medium' | 'large';
+Color : 'red' | 'blue' | 'black' | 'gray' | 'yellow' | 'white';
+Boolean : 'true' | 'false';
+WingNumber : 'two' | 'four';
+EngineNumber : 'one' | 'two' | 'three';
+InscriptionText : 'ADRIA' | 'BOEING' | 'AIRBUS';
+InscriptionDetails : ('inscription' InscriptionTextChooser InscriptionOnTopChooser ColorChooser);

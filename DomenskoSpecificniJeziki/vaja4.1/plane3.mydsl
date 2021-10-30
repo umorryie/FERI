@@ -1,0 +1,22 @@
+plane MyPlane3
+	body
+		size medium
+		color yellow
+    	cabin 
+			color black
+		doors
+			include true
+	wings
+		number two
+		color yellow
+		engines
+			number three
+			color yellow
+	inscription 	
+		text ADRIA
+		onTop false
+		color black
+	backSpoiler
+		tilt small
+	legs
+		show false
